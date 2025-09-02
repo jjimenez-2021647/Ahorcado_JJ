@@ -1,0 +1,769 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url('../Images/Fondo.gif');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 25px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    max-width: 1000px;
+    width: 100%;
+}
+
+/* Título */
+.title {
+    text-align: center;
+    font-size: 3.5em;
+    font-weight: bold;
+    color: #ffff;
+    margin-bottom: 30px;
+    background: white;
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Sección principal */
+.main-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+/* Sección del ahorcado (lado izquierdo) */
+.hangman-section {
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 15px;
+    padding: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+}
+
+.hangman-drawing {
+    color: #fff;
+    font-family: monospace;
+    font-size: 1.2em;
+    white-space: pre-line;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* Panel derecho */
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Temporizador */
+.timer-section {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.timer-display {
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+    font-family: 'Courier New', monospace;
+}
+
+/* Imagen progresiva */
+.progress-image {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-placeholder {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    width: 100%;
+    max-width: 200px;
+}
+
+.image-part {
+    background: linear-gradient(145deg, #e0e7ff, #c7d2fe);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    font-size: 2em;
+    opacity: 0.3;
+    transition: opacity 0.5s ease;
+    border: 2px solid rgba(99, 102, 241, 0.3);
+}
+
+.image-part.revealed {
+    opacity: 1;
+    background: linear-gradient(145deg, #fef3c7, #fde68a);
+    border-color: #f59e0b;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+}
+
+/* Sección inferior */
+.bottom-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+/* Pista */
+.hint-section {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.hint-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.hint-text {
+    font-size: 1.1em;
+    color: #555;
+}
+
+/* Botones de control */
+.control-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-start {
+    background: rgba(12, 30, 62, 0.6);
+    color: white;
+}
+
+.btn-restart {
+    background: rgba(12, 30, 62, 0.6);
+    color: white;
+}
+
+.btn-pause {
+    background: rgba(12, 30, 62, 0.6);
+    color: white;
+}
+
+.btn-exit {
+    background: rgba(12, 30, 62, 0.6);
+    color: white;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Área del juego */
+.game-area {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 25px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+/* Información del juego */
+.game-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.errors-count {
+    color: red;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+/* Letras utilizadas */
+.guessed-letters {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.letters-used {
+    color: #ffeb3b;
+    font-size: 1.3em;
+    font-weight: bold;
+    letter-spacing: 0.2em;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Líneas de la palabra */
+.word-lines {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px 0;
+    border-top: 3px dashed rgba(255, 255, 255, 0.5);
+    border-bottom: 3px dashed rgba(255, 255, 255, 0.5);
+}
+
+.letter-blanks {
+    font-size: 2.5em;
+    font-weight: bold;
+    letter-spacing: 0.3em;
+    color: #fff;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    min-height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ==========================================
+   TECLADO MEJORADO - DISEÑO PROFESIONAL
+   ========================================== */
+
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.keyboard-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Primera fila - 10 teclas */
+.keyboard-row:nth-child(1) {
+    max-width: 650px;
+}
+
+/* Segunda fila - 10 teclas */
+.keyboard-row:nth-child(2) {
+    max-width: 650px;
+}
+
+/* Tercera fila - 7 teclas (más centrada) */
+.keyboard-row:nth-child(3) {
+    max-width: 455px;
+}
+
+.key {
+    background: rgba(12, 30, 62, 0.6);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 1.4em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    min-width: 55px;
+    min-height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto shimmer/brillo */
+.key::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.key:hover {
+    background: rgba(12, 30, 62, 0.6);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+}
+
+.key:hover::before {
+    left: 100%;
+}
+
+.key:active {
+    transform: translateY(0px);
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+}
+
+/* Estados especiales del teclado */
+.key:disabled {
+    background: linear-gradient(145deg, #6b7280, #4b5563);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+    opacity: 0.6;
+}
+
+.key:disabled::before {
+    display: none;
+}
+
+.key.correct {
+    background: linear-gradient(145deg, #10b981, #059669);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    animation: correctPulse 0.6s ease;
+}
+
+.key.incorrect {
+    background: linear-gradient(145deg, #ef4444, #dc2626);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+    animation: incorrectShake 0.6s ease;
+}
+
+/* Animaciones para feedback visual */
+@keyframes correctPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes incorrectShake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: linear-gradient(145deg, #667eea, #764ba2);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.modal h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.modal p {
+    font-size: 1.3em;
+    margin-bottom: 30px;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN MEJORADO
+   ========================================== */
+
+/* Teclado ultra-responsivo con flexbox avanzado */
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(8px, 1.2vw, 12px);
+    max-width: min(750px, 95vw);
+    margin: 0 auto;
+    padding: clamp(12px, 2.5vw, 20px);
+    background: rgba(12, 30, 62, 0.6);
+    border-radius: clamp(15px, 2.5vw, 20px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.keyboard-row {
+    display: flex;
+    gap: clamp(4px, 1vw, 8px);
+    justify-content: center;
+    width: 100%;
+    flex-wrap: nowrap;
+}
+
+.key {
+    background: rgba(12, 30, 62, 0.6);
+    color: white;
+    border: none;
+    border-radius: clamp(8px, 1.5vw, 12px);
+    padding: clamp(8px, 2vw, 16px) clamp(10px, 2.5vw, 20px);
+    font-size: clamp(0.9rem, 2.2vw, 1.4em);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    min-width: clamp(35px, 8vw, 55px);
+    min-height: clamp(35px, 8vw, 55px);
+    max-width: clamp(45px, 9vw, 65px);
+    max-height: clamp(45px, 9vw, 65px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    flex: 0 0 auto;
+}
+
+/* Media queries específicas para diferentes dispositivos */
+
+/* Desktop y laptop grande (1200px+) */
+@media (min-width: 1200px) {
+    .keyboard {
+        max-width: 750px;
+        padding: 20px;
+        gap: 12px;
+    }
+
+    .keyboard-row {
+        gap: 8px;
+    }
+
+    .key {
+        min-width: 55px;
+        min-height: 55px;
+        max-width: 65px;
+        max-height: 65px;
+        padding: 16px 20px;
+        font-size: 1.4em;
+    }
+}
+
+/* Tablet horizontal (768px - 1199px) */
+@media (max-width: 1199px) and (min-width: 768px) {
+    .main-section {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .bottom-section {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .keyboard {
+        max-width: 650px;
+        padding: 18px;
+        gap: 10px;
+    }
+
+    .keyboard-row {
+        gap: 7px;
+    }
+
+    .key {
+        min-width: 48px;
+        min-height: 48px;
+        max-width: 58px;
+        max-height: 58px;
+        padding: 14px 18px;
+        font-size: 1.3em;
+    }
+
+    .title {
+        font-size: 3em;
+    }
+}
+
+/* Tablet vertical (481px - 767px) */
+@media (max-width: 767px) and (min-width: 481px) {
+    .main-section {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .bottom-section {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .control-buttons {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .keyboard {
+        max-width: 500px;
+        padding: 15px;
+        gap: 8px;
+    }
+
+    .keyboard-row {
+        gap: 6px;
+    }
+
+    .key {
+        min-width: 42px;
+        min-height: 42px;
+        max-width: 52px;
+        max-height: 52px;
+        padding: 12px 16px;
+        font-size: 1.2em;
+        border-radius: 10px;
+    }
+
+    .title {
+        font-size: 2.5em;
+    }
+
+    .image-placeholder {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .letter-blanks {
+        font-size: 2.2em;
+    }
+}
+
+/* Móvil grande (376px - 480px) */
+@media (max-width: 480px) and (min-width: 376px) {
+    .control-buttons {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .keyboard {
+        max-width: 420px;
+        padding: 12px;
+        gap: 6px;
+    }
+
+    .keyboard-row {
+        gap: 5px;
+    }
+
+    .key {
+        min-width: 38px;
+        min-height: 38px;
+        max-width: 48px;
+        max-height: 48px;
+        padding: 10px 14px;
+        font-size: 1.1em;
+        border-radius: 8px;
+    }
+
+    .letter-blanks {
+        font-size: 2em;
+    }
+
+    .game-container {
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 2.2em;
+    }
+}
+
+/* Móvil pequeño (hasta 375px) */
+@media (max-width: 375px) {
+    .keyboard {
+        max-width: 320px;
+        padding: 10px;
+        gap: 5px;
+    }
+
+    .keyboard-row {
+        gap: 3px;
+    }
+
+    .key {
+        min-width: 32px;
+        min-height: 32px;
+        max-width: 42px;
+        max-height: 42px;
+        padding: 8px 12px;
+        font-size: 1rem;
+        border-radius: 6px;
+    }
+
+    .letter-blanks {
+        font-size: 1.8em;
+        letter-spacing: 0.2em;
+    }
+
+    .game-container {
+        padding: 15px;
+    }
+
+    .title {
+        font-size: 2em;
+    }
+
+    .hangman-section {
+        min-height: 200px;
+        padding: 15px;
+    }
+
+    .hangman-drawing {
+        font-size: 1em;
+    }
+
+    .timer-display {
+        font-size: 1.5em;
+    }
+
+    .image-part {
+        padding: 10px;
+        font-size: 1.5em;
+    }
+}
+
+/* Móvil ultra-pequeño (hasta 320px) */
+@media (max-width: 320px) {
+    .keyboard {
+        max-width: 280px;
+        padding: 8px;
+        gap: 4px;
+    }
+
+    .keyboard-row {
+        gap: 2px;
+    }
+
+    .key {
+        min-width: 28px;
+        min-height: 28px;
+        max-width: 38px;
+        max-height: 38px;
+        padding: 6px 10px;
+        font-size: 0.9rem;
+        border-radius: 5px;
+    }
+
+    .letter-blanks {
+        font-size: 1.5em;
+        letter-spacing: 0.1em;
+    }
+
+    .title {
+        font-size: 1.8em;
+    }
+
+    .game-container {
+        padding: 12px;
+    }
+}
+
+/* Orientación landscape en móviles */
+@media (max-height: 500px) and (orientation: landscape) {
+    .keyboard {
+        padding: 8px;
+        gap: 4px;
+    }
+
+    .key {
+        min-width: 35px;
+        min-height: 30px;
+        max-width: 45px;
+        max-height: 35px;
+        padding: 6px 12px;
+        font-size: 1rem;
+    }
+
+    .keyboard-row {
+        gap: 4px;
+    }
+
+    .title {
+        font-size: 2em;
+        margin-bottom: 15px;
+    }
+
+    .main-section,
+    .bottom-section {
+        margin-bottom: 15px;
+    }
+}
