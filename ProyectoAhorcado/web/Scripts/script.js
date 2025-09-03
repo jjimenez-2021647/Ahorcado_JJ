@@ -78,7 +78,6 @@ function empezar() {
         actualizarCronometro();
         juegoActivo = true;
         habilitarTeclado();
-        // CAMBIO: Restaurar el mensaje inicial en lugar de dejar vacío
         mostrarMensajeInicial();
 
     }
