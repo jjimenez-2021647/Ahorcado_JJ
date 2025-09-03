@@ -145,27 +145,3 @@ function perdio() {
     reiniciar();
 }
 
-// Función para manejar el clic en salir
-function salir() {
-    const siButton = document.querySelector('button[onclick*="rompecabezas.jsp"]');
-    const noButton = document.querySelector('button[onclick="salir()"]');
-    
-    // Agregar clases CSS para las animaciones
-    siButton.classList.add('agrandar');
-    noButton.classList.add('achicar');
-    
-    // Opcional: cambiar el texto del botón "Sí" para ser más persuasivo
-    const siButtonText = siButton.querySelector('.front span');
-    const textosPersusivos = [
-        "¡Vamos, juega!",
-        "¡Solo un juego!",
-        "¡Será divertido!",
-        "¡Inténtalo!",
-        "¡Por favor!",
-        "¡Solo uno!",
-        "¡Te gustará!"
-    ];
-    
-    const textoAleatorio = textosPersusivos[Math.floor(Math.random() * textosPersusivos.length)];
-    siButtonText.textContent = textoAleatorio;
-}
