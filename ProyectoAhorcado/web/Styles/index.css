@@ -16,7 +16,7 @@ body {
     align-items: center;
 }
 
-.game-container {
+.contenedor-juego {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(15px);
     border-radius: 25px;
@@ -28,7 +28,7 @@ body {
 }
 
 /* Título */
-.title {
+.titulo {
     text-align: center;
     font-size: 3.5em;
     font-weight: bold;
@@ -38,10 +38,9 @@ body {
     background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    
 }
 
-@keyframes gradient {
+@keyframes gradiente {
     0% {
         background-position: 0% 50%;
     }
@@ -54,7 +53,7 @@ body {
 }
 
 /* Sección principal */
-.main-section {
+.seccion-principal {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
@@ -62,7 +61,7 @@ body {
 }
 
 /* Sección del ahorcado (lado izquierdo) */
-.hangman-section {
+.seccion-ahorcado {
     background: rgba(0, 0, 0, 0.8);
     border-radius: 15px;
     padding: 20px;
@@ -74,7 +73,7 @@ body {
     min-height: 300px;
 }
 
-.hangman-drawing {
+.dibujo-ahorcado {
     color: #fff;
     font-family: monospace;
     font-size: 1.2em;
@@ -84,14 +83,14 @@ body {
 }
 
 /* Panel derecho */
-.right-panel {
+.panel-derecho {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
 /* Temporizador */
-.timer-section {
+.seccion-temporizador {
     background: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
     padding: 15px;
@@ -99,7 +98,7 @@ body {
     border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
-.timer-display {
+.pantalla-tiempo {
     font-size: 2em;
     font-weight: bold;
     color: #333;
@@ -107,7 +106,7 @@ body {
 }
 
 /* Imagen progresiva */
-.progress-image {
+.imagen-progresiva {
     background: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
     padding: 20px;
@@ -118,7 +117,7 @@ body {
     justify-content: center;
 }
 
-.image-placeholder {
+.contenedor-imagen {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
@@ -126,7 +125,7 @@ body {
     max-width: 200px;
 }
 
-.image-part {
+.parte-imagen {
     background: linear-gradient(145deg, #e0e7ff, #c7d2fe);
     border-radius: 10px;
     padding: 15px;
@@ -137,7 +136,7 @@ body {
     border: 2px solid rgba(99, 102, 241, 0.3);
 }
 
-.image-part.revealed {
+.parte-imagen.revelada {
     opacity: 1;
     background: linear-gradient(145deg, #fef3c7, #fde68a);
     border-color: #f59e0b;
@@ -146,7 +145,7 @@ body {
 }
 
 /* Sección inferior */
-.bottom-section {
+.seccion-inferior {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
@@ -154,72 +153,174 @@ body {
 }
 
 /* Pista */
-.hint-section {
+.seccion-pista {
     background: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
     padding: 20px;
     border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
-.hint-title {
+.titulo-pista {
     font-size: 1.5em;
     font-weight: bold;
     color: #333;
     margin-bottom: 10px;
 }
 
-.hint-text {
+.texto-pista {
     font-size: 1.1em;
     color: #555;
 }
 
-/* Botones de control */
-.control-buttons {
+/* ==========================================
+   BOTONES CON EFECTO SALTITO 3D
+   ========================================== */
+.botones-control {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
 }
 
-.btn {
-    padding: 12px 20px;
+.boton {
+    position: relative;
     border: none;
-    border-radius: 12px;
-    font-size: 1.1em;
-    font-weight: bold;
+    background: rgba(12, 30, 62, 0.6);
+    color: white;
+    padding: 0;
+    outline: none;
     cursor: pointer;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
+    transform-style: preserve-3d;
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.btn-start {
+.boton:hover {
+    transform: translateY(-5px) rotateX(15deg);
+}
+
+.boton:active {
+    transform: translateY(0px) rotateX(0deg);
+}
+
+.boton .sombra {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: rgba(12, 30, 62, 0.6);
-    color: white;
+    border-radius: 12px;
+    transform: translateY(2px);
+    transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
 }
 
-.btn-restart {
+.boton .borde {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: linear-gradient(
+        to left,
+        #0c1e3e 0%,
+        #19366b 8%,
+        #19366b 92%,
+        #0c1e3e 100%
+    );
+}
+
+.boton .frente {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    font-size: 1.1em;
+    color: white;
     background: rgba(12, 30, 62, 0.6);
-    color: white;
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    transform: translateY(-4px);
+    transition: all 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+    border: 1px solid rgba(56, 97, 151, 0.4);
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 4px 15px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    text-shadow: 0 1px 2px rgba(12, 30, 62, 0.6);
+    overflow: hidden;
 }
 
-.btn-pause {
-    background: rgba(12, 30, 62, 0.6);
-    color: white;
+.boton:hover .sombra {
+    transform: translateY(4px);
+    transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+    background: rgba(12, 30, 62, 0.8);
 }
 
-.btn-exit {
-    background: rgba(12, 30, 62, 0.6);
+.boton:hover .frente {
+    transform: translateY(-6px);
+    background: rgba(12, 30, 62, 0.8);
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 8px 25px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(25, 54, 107, 0.5);
+    border-color: rgba(56, 97, 151, 0.6);
     color: white;
+    transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
 }
 
-.btn:hover {
+.boton:active .sombra {
+    transform: translateY(1px);
+    transition: transform 34ms;
+}
+
+.boton:active .frente {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    transition: transform 34ms;
+}
+
+/* Efecto de brillo en los botones */
+.boton .frente::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
+    opacity: 0;
+}
+
+.boton:hover .frente::before {
+    animation: brillo 0.8s ease-out;
+}
+
+@keyframes brillo {
+    0% { 
+        transform: translateX(-100%) translateY(-100%) rotate(45deg); 
+        opacity: 0; 
+    }
+    50% { 
+        opacity: 1; 
+    }
+    100% { 
+        transform: translateX(100%) translateY(100%) rotate(45deg); 
+        opacity: 0; 
+    }
+}
+
+.boton .frente span {
+    user-select: none;
 }
 
 /* Área del juego */
-.game-area {
+.area-juego {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 25px;
@@ -228,24 +329,24 @@ body {
 }
 
 /* Información del juego */
-.game-info {
+.informacion-juego {
     text-align: center;
     margin-bottom: 20px;
 }
 
-.errors-count {
+.contador-errores {
     color: red;
     font-size: 1.3em;
     font-weight: bold;
 }
 
 /* Letras utilizadas */
-.guessed-letters {
+.letras-adivinadas {
     text-align: center;
     margin-bottom: 20px;
 }
 
-.letters-used {
+.letras-usadas {
     color: #ffeb3b;
     font-size: 1.3em;
     font-weight: bold;
@@ -254,7 +355,7 @@ body {
 }
 
 /* Líneas de la palabra */
-.word-lines {
+.lineas-palabra {
     text-align: center;
     margin-bottom: 30px;
     padding: 20px 0;
@@ -262,7 +363,7 @@ body {
     border-bottom: 3px dashed rgba(255, 255, 255, 0.5);
 }
 
-.letter-blanks {
+.espacios-letras {
     font-size: 2.5em;
     font-weight: bold;
     letter-spacing: 0.3em;
@@ -275,69 +376,57 @@ body {
 }
 
 /* ==========================================
-   TECLADO MEJORADO - DISEÑO PROFESIONAL
+   TECLADO - ESTILO PERSONALIZADO
    ========================================== */
-
-.keyboard {
+.teclado {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
-    max-width: 750px;
+    gap: clamp(8px, 1.2vw, 12px);
+    max-width: min(750px, 95vw);
     margin: 0 auto;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 20px;
+    padding: clamp(12px, 2.5vw, 20px);
+    background: rgba(12, 30, 62, 0.6);
+    border-radius: clamp(15px, 2.5vw, 20px);
     border: 2px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
 }
 
-.keyboard-row {
+.fila-teclado {
     display: flex;
-    gap: 8px;
+    gap: clamp(4px, 1vw, 8px);
     justify-content: center;
     width: 100%;
+    flex-wrap: nowrap;
 }
 
-/* Primera fila - 10 teclas */
-.keyboard-row:nth-child(1) {
-    max-width: 650px;
-}
-
-/* Segunda fila - 10 teclas */
-.keyboard-row:nth-child(2) {
-    max-width: 650px;
-}
-
-/* Tercera fila - 7 teclas (más centrada) */
-.keyboard-row:nth-child(3) {
-    max-width: 455px;
-}
-
-.key {
+.tecla {
     background: rgba(12, 30, 62, 0.6);
     color: white;
     border: none;
-    border-radius: 12px;
-    padding: 16px 20px;
-    font-size: 1.4em;
+    border-radius: clamp(8px, 1.5vw, 12px);
+    padding: clamp(8px, 2vw, 16px) clamp(10px, 2.5vw, 20px);
+    font-size: clamp(0.9rem, 2.2vw, 1.4em);
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.41);
     text-transform: uppercase;
     letter-spacing: 1px;
-    min-width: 55px;
-    min-height: 55px;
+    min-width: clamp(35px, 8vw, 55px);
+    min-height: clamp(35px, 8vw, 55px);
+    max-width: clamp(45px, 9vw, 65px);
+    max-height: clamp(45px, 9vw, 65px);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     overflow: hidden;
+    flex: 0 0 auto;
 }
 
-/* Efecto shimmer/brillo */
-.key::before {
+/* Efecto brillo/shimmer para las teclas */
+.tecla::before {
     content: '';
     position: absolute;
     top: 0;
@@ -348,23 +437,23 @@ body {
     transition: left 0.5s;
 }
 
-.key:hover {
-    background: rgba(12, 30, 62, 0.6);
+.tecla:hover {
+    background: rgba(12, 30, 62, 0.8);
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+    box-shadow: 0 8px 20px rgba(26, 23, 87, 0.4);
 }
 
-.key:hover::before {
+.tecla:hover::before {
     left: 100%;
 }
 
-.key:active {
+.tecla:active {
     transform: translateY(0px);
     box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
 }
 
 /* Estados especiales del teclado */
-.key:disabled {
+.tecla:disabled {
     background: linear-gradient(145deg, #6b7280, #4b5563);
     cursor: not-allowed;
     transform: none;
@@ -372,24 +461,24 @@ body {
     opacity: 0.6;
 }
 
-.key:disabled::before {
+.tecla:disabled::before {
     display: none;
 }
 
-.key.correct {
+.tecla.correcta {
     background: linear-gradient(145deg, #10b981, #059669);
     box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-    animation: correctPulse 0.6s ease;
+    animation: pulsoCorreto 0.6s ease;
 }
 
-.key.incorrect {
+.tecla.incorrecta {
     background: linear-gradient(145deg, #ef4444, #dc2626);
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-    animation: incorrectShake 0.6s ease;
+    animation: sacudidaIncorrecta 0.6s ease;
 }
 
-/* Animaciones para feedback visual */
-@keyframes correctPulse {
+/* Animaciones para retroalimentación visual */
+@keyframes pulsoCorreto {
     0%, 100% {
         transform: scale(1);
     }
@@ -398,7 +487,7 @@ body {
     }
 }
 
-@keyframes incorrectShake {
+@keyframes sacudidaIncorrecta {
     0%, 100% {
         transform: translateX(0);
     }
@@ -424,7 +513,7 @@ body {
     z-index: 1000;
 }
 
-.modal-content {
+.contenido-modal {
     background: linear-gradient(145deg, #667eea, #764ba2);
     padding: 40px;
     border-radius: 20px;
@@ -434,84 +523,34 @@ body {
     border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
-.modal h2 {
+.contenido-modal h2 {
     font-size: 2.5em;
     margin-bottom: 20px;
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-.modal p {
+.contenido-modal p {
     font-size: 1.3em;
     margin-bottom: 30px;
 }
 
 /* ==========================================
-   RESPONSIVE DESIGN MEJORADO
+   DISEÑO RESPONSIVO
    ========================================== */
 
-/* Teclado ultra-responsivo con flexbox avanzado */
-.keyboard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: clamp(8px, 1.2vw, 12px);
-    max-width: min(750px, 95vw);
-    margin: 0 auto;
-    padding: clamp(12px, 2.5vw, 20px);
-    background: rgba(12, 30, 62, 0.6);
-    border-radius: clamp(15px, 2.5vw, 20px);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-}
-
-.keyboard-row {
-    display: flex;
-    gap: clamp(4px, 1vw, 8px);
-    justify-content: center;
-    width: 100%;
-    flex-wrap: nowrap;
-}
-
-.key {
-    background: rgba(12, 30, 62, 0.6);
-    color: white;
-    border: none;
-    border-radius: clamp(8px, 1.5vw, 12px);
-    padding: clamp(8px, 2vw, 16px) clamp(10px, 2.5vw, 20px);
-    font-size: clamp(0.9rem, 2.2vw, 1.4em);
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    min-width: clamp(35px, 8vw, 55px);
-    min-height: clamp(35px, 8vw, 55px);
-    max-width: clamp(45px, 9vw, 65px);
-    max-height: clamp(45px, 9vw, 65px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    flex: 0 0 auto;
-}
-
-/* Media queries específicas para diferentes dispositivos */
-
-/* Desktop y laptop grande (1200px+) */
+/* Escritorio y laptop grande (1200px+) */
 @media (min-width: 1200px) {
-    .keyboard {
+    .teclado {
         max-width: 750px;
         padding: 20px;
         gap: 12px;
     }
 
-    .keyboard-row {
+    .fila-teclado {
         gap: 8px;
     }
 
-    .key {
+    .tecla {
         min-width: 55px;
         min-height: 55px;
         max-width: 65px;
@@ -523,27 +562,27 @@ body {
 
 /* Tablet horizontal (768px - 1199px) */
 @media (max-width: 1199px) and (min-width: 768px) {
-    .main-section {
+    .seccion-principal {
         grid-template-columns: 1fr;
         gap: 20px;
     }
 
-    .bottom-section {
+    .seccion-inferior {
         grid-template-columns: 1fr;
         gap: 20px;
     }
 
-    .keyboard {
+    .teclado {
         max-width: 650px;
         padding: 18px;
         gap: 10px;
     }
 
-    .keyboard-row {
+    .fila-teclado {
         gap: 7px;
     }
 
-    .key {
+    .tecla {
         min-width: 48px;
         min-height: 48px;
         max-width: 58px;
@@ -552,39 +591,39 @@ body {
         font-size: 1.3em;
     }
 
-    .title {
+    .titulo {
         font-size: 3em;
     }
 }
 
 /* Tablet vertical (481px - 767px) */
 @media (max-width: 767px) and (min-width: 481px) {
-    .main-section {
+    .seccion-principal {
         grid-template-columns: 1fr;
         gap: 15px;
     }
 
-    .bottom-section {
+    .seccion-inferior {
         grid-template-columns: 1fr;
         gap: 15px;
     }
 
-    .control-buttons {
+    .botones-control {
         grid-template-columns: 1fr 1fr;
         gap: 10px;
     }
 
-    .keyboard {
+    .teclado {
         max-width: 500px;
         padding: 15px;
         gap: 8px;
     }
 
-    .keyboard-row {
+    .fila-teclado {
         gap: 6px;
     }
 
-    .key {
+    .tecla {
         min-width: 42px;
         min-height: 42px;
         max-width: 52px;
@@ -594,37 +633,37 @@ body {
         border-radius: 10px;
     }
 
-    .title {
+    .titulo {
         font-size: 2.5em;
     }
 
-    .image-placeholder {
+    .contenedor-imagen {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .letter-blanks {
+    .espacios-letras {
         font-size: 2.2em;
     }
 }
 
 /* Móvil grande (376px - 480px) */
 @media (max-width: 480px) and (min-width: 376px) {
-    .control-buttons {
+    .botones-control {
         grid-template-columns: 1fr;
         gap: 8px;
     }
 
-    .keyboard {
+    .teclado {
         max-width: 420px;
         padding: 12px;
         gap: 6px;
     }
 
-    .keyboard-row {
+    .fila-teclado {
         gap: 5px;
     }
 
-    .key {
+    .tecla {
         min-width: 38px;
         min-height: 38px;
         max-width: 48px;
@@ -634,32 +673,32 @@ body {
         border-radius: 8px;
     }
 
-    .letter-blanks {
+    .espacios-letras {
         font-size: 2em;
     }
 
-    .game-container {
+    .contenedor-juego {
         padding: 20px;
     }
 
-    .title {
+    .titulo {
         font-size: 2.2em;
     }
 }
 
 /* Móvil pequeño (hasta 375px) */
 @media (max-width: 375px) {
-    .keyboard {
+    .teclado {
         max-width: 320px;
         padding: 10px;
         gap: 5px;
     }
 
-    .keyboard-row {
+    .fila-teclado {
         gap: 3px;
     }
 
-    .key {
+    .tecla {
         min-width: 32px;
         min-height: 32px;
         max-width: 42px;
@@ -669,33 +708,33 @@ body {
         border-radius: 6px;
     }
 
-    .letter-blanks {
+    .espacios-letras {
         font-size: 1.8em;
         letter-spacing: 0.2em;
     }
 
-    .game-container {
+    .contenedor-juego {
         padding: 15px;
     }
 
-    .title {
+    .titulo {
         font-size: 2em;
     }
 
-    .hangman-section {
+    .seccion-ahorcado {
         min-height: 200px;
         padding: 15px;
     }
 
-    .hangman-drawing {
+    .dibujo-ahorcado {
         font-size: 1em;
     }
 
-    .timer-display {
+    .pantalla-tiempo {
         font-size: 1.5em;
     }
 
-    .image-part {
+    .parte-imagen {
         padding: 10px;
         font-size: 1.5em;
     }
@@ -703,17 +742,17 @@ body {
 
 /* Móvil ultra-pequeño (hasta 320px) */
 @media (max-width: 320px) {
-    .keyboard {
+    .teclado {
         max-width: 280px;
         padding: 8px;
         gap: 4px;
     }
 
-    .keyboard-row {
+    .fila-teclado {
         gap: 2px;
     }
 
-    .key {
+    .tecla {
         min-width: 28px;
         min-height: 28px;
         max-width: 38px;
@@ -723,28 +762,28 @@ body {
         border-radius: 5px;
     }
 
-    .letter-blanks {
+    .espacios-letras {
         font-size: 1.5em;
         letter-spacing: 0.1em;
     }
 
-    .title {
+    .titulo {
         font-size: 1.8em;
     }
 
-    .game-container {
+    .contenedor-juego {
         padding: 12px;
     }
 }
 
-/* Orientación landscape en móviles */
+/* Orientación horizontal en móviles */
 @media (max-height: 500px) and (orientation: landscape) {
-    .keyboard {
+    .teclado {
         padding: 8px;
         gap: 4px;
     }
 
-    .key {
+    .tecla {
         min-width: 35px;
         min-height: 30px;
         max-width: 45px;
@@ -753,17 +792,36 @@ body {
         font-size: 1rem;
     }
 
-    .keyboard-row {
+    .fila-teclado {
         gap: 4px;
     }
 
-    .title {
+    .titulo {
         font-size: 2em;
         margin-bottom: 15px;
     }
 
-    .main-section,
-    .bottom-section {
+    .seccion-principal,
+    .seccion-inferior {
         margin-bottom: 15px;
     }
+}
+
+/* Estilos para las imágenes del ahorcado */
+.imagen-ahorcado {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Mantiene la proporción de la imagen */
+    border-radius: 10px;
+    transition: opacity 0.3s ease-in-out; /* Transición suave al cambiar imagen */
+}
+
+/* Ajustar el contenedor del dibujo para las imágenes */
+.dibujo-ahorcado {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    min-height: 300px; /* Ajusta según tus necesidades */
 }
