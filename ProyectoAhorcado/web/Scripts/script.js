@@ -21,7 +21,7 @@ let tituloModalElem = document.getElementById("tituloModal");
 let mensajeModalElem = document.getElementById("mensajeModal");
 let tecladoElem = document.getElementById("teclado");
 
-// Banco de palabras con pistas (puedes expandir esto)
+// Banco de palabras con pistas 
 const palabrasConPistas = [
     {palabra: "MURCIELAGO", pista: "Este animal es pequeño, su nombre lleva todas las vocales."},
     {palabra: "COCODRILO", pista: "Este animal es grande, verde, de dientes fuertes."},
@@ -32,9 +32,9 @@ const palabrasConPistas = [
 
 // Función para mostrar el mensaje inicial
 function mostrarMensajeInicial() {
-    imagenProgresoElem.innerHTML = `<p style="text-align: center; color:black; font-size: 16px; margin: 20px; line-height: 1.4;">
-                                        Si me quieres ver, correctamente debes responder.
-                                    </p>`;
+    imagenProgresoElem.innerHTML = `<p id="mensajeInicial" style="text-align: center; color: black !important; font-size: 18px !important; margin: 20px; line-height: 1.4; font-weight: bold; background-color: rgba(255,255,255,0.8); padding: 15px; border-radius: 8px;">
+            Si me quieres ver, correctamente debes responder.
+        </p>`;
 }
 
 // Función principal del cronómetro
