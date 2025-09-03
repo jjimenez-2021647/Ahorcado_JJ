@@ -1,0 +1,988 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url('../Images/Fondo.gif');
+    background-size: cover;              /* Cubre toda la pantalla */
+    background-position: center center;  /* Centra la imagen */
+    background-repeat: no-repeat;        /* No se repite */
+    background-attachment: fixed;        /* Fijo al hacer scroll */
+    min-height: 100vh;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;                          /* Elimina márgenes por defecto */
+}
+
+.contenedor-juego {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 25px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    max-width: 1000px;
+    width: 100%;
+}
+
+/* Título */
+.titulo {
+    text-align: center;
+    font-size: 3.5em;
+    font-weight: bold;
+    color: #ffff;
+    margin-bottom: 30px;
+    background: white;
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes gradiente {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Sección principal */
+.seccion-principal {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+/* Sección del ahorcado (lado izquierdo) */
+.seccion-ahorcado {
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 15px;
+    padding: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+}
+
+.dibujo-ahorcado {
+    color: #fff;
+    font-family: monospace;
+    font-size: 1.2em;
+    white-space: pre-line;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* Panel derecho */
+.panel-derecho {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Temporizador */
+.seccion-temporizador {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.pantalla-tiempo {
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+    font-family: 'Courier New', monospace;
+}
+/*
+
+.imagen-progresiva {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contenedor-imagen {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    width: 100%;
+    max-width: 200px;
+}
+*/
+
+.parte-imagen {
+    background: linear-gradient(145deg, #e0e7ff, #c7d2fe);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    font-size: 2em;
+    opacity: 0.3;
+    transition: opacity 0.5s ease;
+    border: 2px solid rgba(99, 102, 241, 0.3);
+}
+
+.parte-imagen.revelada {
+    opacity: 1;
+    background: linear-gradient(145deg, #fef3c7, #fde68a);
+    border-color: #f59e0b;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+}
+
+/* Sección inferior */
+.seccion-inferior {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+/* Pista */
+.seccion-pista {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.titulo-pista {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.texto-pista {
+    font-size: 1.1em;
+    color: #555;
+}
+
+/* ==========================================
+   BOTONES CON EFECTO SALTITO 3D
+   ========================================== */
+.botones-control {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.boton {
+    position: relative;
+    border: none;
+    background: rgba(12, 30, 62, 0.6);
+    color: white;
+    padding: 0;
+    outline: none;
+    cursor: pointer;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
+    transform-style: preserve-3d;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.boton:hover {
+    transform: translateY(-5px) rotateX(15deg);
+}
+
+.boton:active {
+    transform: translateY(0px) rotateX(0deg);
+}
+
+.boton .sombra {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(12, 30, 62, 0.6);
+    border-radius: 12px;
+    transform: translateY(2px);
+    transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+
+.boton .borde {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: linear-gradient(
+        to left,
+        #0c1e3e 0%,
+        #19366b 8%,
+        #19366b 92%,
+        #0c1e3e 100%
+    );
+}
+
+.boton .frente {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    font-size: 1.1em;
+    color: white;
+    background: rgba(12, 30, 62, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    transform: translateY(-4px);
+    transition: all 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+    border: 1px solid rgba(56, 97, 151, 0.4);
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 4px 15px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    text-shadow: 0 1px 2px rgba(12, 30, 62, 0.6);
+    overflow: hidden;
+}
+
+.boton:hover .sombra {
+    transform: translateY(4px);
+    transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+    background: rgba(12, 30, 62, 0.8);
+}
+
+.boton:hover .frente {
+    transform: translateY(-6px);
+    background: rgba(12, 30, 62, 0.8);
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 8px 25px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(25, 54, 107, 0.5);
+    border-color: rgba(56, 97, 151, 0.6);
+    color: white;
+    transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
+
+.boton:active .sombra {
+    transform: translateY(1px);
+    transition: transform 34ms;
+}
+
+.boton:active .frente {
+    transform: translateY(-2px);
+    transition: transform 34ms;
+}
+
+/* Efecto de brillo en los botones */
+.boton .frente::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
+    opacity: 0;
+}
+
+.boton:hover .frente::before {
+    animation: brillo 0.8s ease-out;
+}
+
+@keyframes brillo {
+    0% { 
+        transform: translateX(-100%) translateY(-100%) rotate(45deg); 
+        opacity: 0; 
+    }
+    50% { 
+        opacity: 1; 
+    }
+    100% { 
+        transform: translateX(100%) translateY(100%) rotate(45deg); 
+        opacity: 0; 
+    }
+}
+
+.boton .frente span {
+    user-select: none;
+}
+
+/* Área del juego */
+.area-juego {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 25px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+/* Información del juego */
+.informacion-juego {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.contador-errores {
+    color: red;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+/* Letras utilizadas */
+.letras-adivinadas {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.letras-usadas {
+    color: #ffeb3b;
+    font-size: 1.3em;
+    font-weight: bold;
+    letter-spacing: 0.2em;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Líneas de la palabra */
+.lineas-palabra {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px 0;
+    border-top: 3px dashed rgba(255, 255, 255, 0.5);
+    border-bottom: 3px dashed rgba(255, 255, 255, 0.5);
+}
+
+.espacios-letras {
+    font-size: 2.5em;
+    font-weight: bold;
+    letter-spacing: 0.3em;
+    color: #fff;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    min-height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ==========================================
+   TECLADO - ESTILO PERSONALIZADO MEJORADO
+   ========================================== */
+.teclado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(4px, 1vw, 12px);
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: clamp(8px, 2vw, 20px);
+    background: rgba(12, 30, 62, 0.6);
+    border-radius: clamp(10px, 2vw, 20px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    box-sizing: border-box;
+}
+
+.fila-teclado {
+    display: flex;
+    gap: clamp(1px, 0.5vw, 8px);
+    justify-content: center;
+    width: 100%;
+    flex-wrap: nowrap;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.tecla {
+    background: rgba(12, 30, 62, 0.6);
+    color: white;
+    border: none;
+    border-radius: clamp(4px, 1vw, 12px);
+    padding: 0;
+    font-size: clamp(0.7rem, 2.5vw, 1.4em);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.41);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    width: clamp(24px, 6.5vw, 60px);
+    height: clamp(24px, 6.5vw, 60px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+}
+
+/* Efecto brillo/shimmer para las teclas */
+.tecla::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.tecla:hover {
+    background: rgba(12, 30, 62, 0.8);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(26, 23, 87, 0.4);
+}
+
+.tecla:hover::before {
+    left: 100%;
+}
+
+.tecla:active {
+    transform: translateY(0px);
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+}
+
+/* Estados especiales del teclado */
+.tecla:disabled {
+    background: linear-gradient(145deg, #6b7280, #4b5563);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+    opacity: 0.6;
+}
+
+.tecla:disabled::before {
+    display: none;
+}
+
+.tecla.correcta {
+    background: linear-gradient(145deg, #10b981, #059669);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    animation: pulsoCorreto 0.6s ease;
+}
+
+.tecla.incorrecta {
+    background: linear-gradient(145deg, #ef4444, #dc2626);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+    animation: sacudidaIncorrecta 0.6s ease;
+}
+
+/* Animaciones para retroalimentación visual */
+@keyframes pulsoCorreto {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes sacudidaIncorrecta {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(12, 30, 62, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.contenido-modal {
+    background: #F8F8FF ;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    color: black;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.contenido-modal h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.contenido-modal p {
+    font-size: 1.3em;
+    margin-bottom: 30px;
+}
+
+/* ==========================================
+   DISEÑO RESPONSIVO MEJORADO
+   ========================================== */
+
+/* Móvil muy pequeño (hasta 320px) */
+@media (max-width: 320px) {
+    .teclado {
+        max-width: 100%;
+        padding: 6px;
+        gap: 2px;
+        margin: 0;
+    }
+
+    .fila-teclado {
+        gap: 1px;
+        width: 100%;
+    }
+
+    .tecla {
+        width: 26px;
+        height: 26px;
+        font-size: 0.75rem;
+        border-radius: 4px;
+        min-width: 26px;
+        min-height: 26px;
+    }
+
+    .contenedor-juego {
+        padding: 12px;
+    }
+
+    .titulo {
+        font-size: 1.8em;
+    }
+
+    .seccion-principal {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .seccion-inferior {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .botones-control {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .seccion-ahorcado {
+        min-height: 200px;
+        padding: 15px;
+    }
+
+    .dibujo-ahorcado {
+        font-size: 1em;
+    }
+
+    .pantalla-tiempo {
+        font-size: 1.5em;
+    }
+
+    .parte-imagen {
+        padding: 10px;
+        font-size: 1.5em;
+    }
+
+    .espacios-letras {
+        font-size: 1.5em;
+        letter-spacing: 0.1em;
+    }
+}
+
+/* Móvil pequeño (321px - 375px) */
+@media (max-width: 375px) and (min-width: 321px) {
+    .teclado {
+        max-width: 100%;
+        padding: 6px;
+        gap: 2px;
+        margin: 0;
+    }
+
+    .fila-teclado {
+        gap: 1px;
+        width: 100%;
+    }
+
+    .tecla {
+        width: 28px;
+        height: 28px;
+        font-size: 0.75rem;
+        border-radius: 4px;
+        min-width: 28px;
+        min-height: 28px;
+    }
+
+    .contenedor-juego {
+        padding: 15px;
+    }
+
+    .titulo {
+        font-size: 2em;
+    }
+
+    .seccion-principal {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .seccion-inferior {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .espacios-letras {
+        font-size: 1.8em;
+        letter-spacing: 0.2em;
+    }
+}
+
+/* Móvil mediano (376px - 480px) */
+@media (max-width: 480px) and (min-width: 376px) {
+    .teclado {
+        max-width: 100%;
+        padding: 10px;
+        gap: 4px;
+    }
+
+    .fila-teclado {
+        gap: 3px;
+    }
+
+    .tecla {
+        width: 34px;
+        height: 34px;
+        font-size: 0.9rem;
+        border-radius: 6px;
+    }
+
+    .contenedor-juego {
+        padding: 20px;
+    }
+
+    .titulo {
+        font-size: 2.2em;
+    }
+
+    .botones-control {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .espacios-letras {
+        font-size: 2em;
+    }
+
+    .contenedor-imagen {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Tablet vertical (481px - 767px) */
+@media (max-width: 767px) and (min-width: 481px) {
+    .seccion-principal {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .seccion-inferior {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .botones-control {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .teclado {
+        max-width: 500px;
+        padding: 15px;
+        gap: 8px;
+    }
+
+    .fila-teclado {
+        gap: 6px;
+    }
+
+    .tecla {
+        width: 42px;
+        height: 42px;
+        font-size: 1.2em;
+        border-radius: 10px;
+    }
+
+    .titulo {
+        font-size: 2.5em;
+    }
+
+    .espacios-letras {
+        font-size: 2.2em;
+    }
+}
+
+/* Tablet horizontal (768px - 1199px) */
+@media (max-width: 1199px) and (min-width: 768px) {
+    .seccion-principal {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .seccion-inferior {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .teclado {
+        max-width: 650px;
+        padding: 18px;
+        gap: 10px;
+    }
+
+    .fila-teclado {
+        gap: 7px;
+    }
+
+    .tecla {
+        width: 48px;
+        height: 48px;
+        font-size: 1.3em;
+        padding: 14px 18px;
+        border-radius: 12px;
+    }
+
+    .titulo {
+        font-size: 3em;
+    }
+}
+
+/* Desktop estándar (1200px+) */
+@media (min-width: 1200px) {
+    .teclado {
+        max-width: 750px;
+        padding: 20px;
+        gap: 12px;
+    }
+
+    .fila-teclado {
+        gap: 8px;
+    }
+
+    .tecla {
+        width: 55px;
+        height: 55px;
+        font-size: 1.4em;
+        padding: 16px 20px;
+        border-radius: 12px;
+    }
+}
+
+/* Orientación horizontal en dispositivos móviles */
+@media (max-height: 500px) and (orientation: landscape) {
+    .teclado {
+        padding: 6px;
+        gap: 2px;
+        max-width: 100%;
+    }
+
+    .fila-teclado {
+        gap: 2px;
+    }
+
+    .tecla {
+        width: 28px;
+        height: 25px;
+        font-size: 0.75rem;
+        border-radius: 4px;
+    }
+}
+
+/* Ajuste final para pantallas muy pequeñas */
+@media (max-width: 360px) {
+    .area-juego {
+        padding: 15px;
+    }
+    
+    .contenedor-juego {
+        padding: 15px;
+    }
+}
+
+/* Optimización para dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+    .tecla:hover {
+        transform: none;
+        background: rgba(12, 30, 62, 0.6);
+        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.41);
+    }
+    
+    .tecla:active {
+        transform: scale(0.95);
+        background: rgba(12, 30, 62, 0.8);
+    }
+}
+
+/* Estilos para las imágenes del ahorcado */
+.imagen-ahorcado {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Mantiene la proporción de la imagen */
+    border-radius: 10px;
+    transition: opacity 0.3s ease-in-out; /* Transición suave al cambiar imagen */
+}
+
+/* Ajustar el contenedor del dibujo para las imágenes */
+.dibujo-ahorcado {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    min-height: 300px; /* Ajusta según tus necesidades */
+}
+
+
+/* Imagen progresiva - SIN bordes ni padding que reduzcan el espacio */
+.imagen-progresiva {
+    width: 100%;
+    height: 300px; /* Ajusta según necesites */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px; /* Solo esquinas redondeadas */
+    overflow: hidden; /* CLAVE: evita que la imagen se salga */
+    background-color: #f0f0f0; /* Color de fondo mientras carga */
+    /* QUITAR: border, padding que reducen espacio */
+}
+
+/* El contenedor de la imagen - SIN padding interno */
+.contenedor-imagen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    /* QUITAR cualquier padding, margin o border aquí */
+}
+
+/* La imagen que ocupará TODO el espacio disponible */
+.imagen-progreso {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Llena completamente el espacio */
+    object-position: center; /* Centra la imagen */
+    border-radius: 0; /* Sin esquinas redondeadas en la imagen individual */
+    transition: all 0.5s ease-in-out;
+    display: block; /* Asegura que no haya espacios extra */
+}
+
+/* Si quieres que se vea completa la imagen sin recortar, usa esto en su lugar: */
+.imagen-progreso.completa {
+    object-fit: contain; /* Muestra toda la imagen */
+    background-color: #000; /* Fondo para espacios vacíos si los hay */
+}
+
+/* Animación dramática */
+@keyframes aparecerImagenVictoria {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.imagen-progreso {
+    animation: aparecerImagenVictoria 1.5s ease-out;
+}
+/* ELIMINA O COMENTA ESTA PARTE COMPLETA (líneas 89-96 aproximadamente): */
+
+/*
+.imagen-progresiva {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 20px;              ← ESTO está causando el problema
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+*/
+
+/* Y también comenta o elimina esta parte (líneas 98-107): */
+/*
+.contenedor-imagen {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    width: 100%;
+    max-width: 200px;           ← ESTO también está limitando el tamaño
+}
+*/
+
+/* MANTÉN SOLO ESTAS DEFINICIONES (las que ya tienes al final): */
+.imagen-progresiva {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.9); /* Añadir el fondo blanco si lo quieres */
+}
+
+.contenedor-imagen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.imagen-progreso {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 15px; /* Cambié esto para que coincida con el contenedor */
+    transition: all 0.5s ease-in-out;
+    display: block;
+}

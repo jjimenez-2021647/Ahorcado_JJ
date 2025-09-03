@@ -24,11 +24,18 @@ let tecladoElem = document.getElementById("teclado");
 // Banco de palabras con pistas (puedes expandir esto)
 const palabrasConPistas = [
     {palabra: "MURCIELAGO", pista: "Este animal es pequeño, su nombre lleva todas las vocales."},
-    {palabra: "COCODRILO", pista: "Este animal es grande, verda, de dientes fuertes."},
+    {palabra: "COCODRILO", pista: "Este animal es grande, verde, de dientes fuertes."},
     {palabra: "PATINETA", pista: "Tengo 4 ruedas, lija y tornillos."},
     {palabra: "MICROFONO", pista: "Me usan cuando quieren ser escuchados."},
     {palabra: "ROMPECABEZAS", pista: "Soy un dolor de cabeza para quienes no tienen paciencia."},
 ];
+
+// Función para mostrar el mensaje inicial
+function mostrarMensajeInicial() {
+    imagenProgresoElem.innerHTML = `<p style="text-align: center; color:black; font-size: 16px; margin: 20px; line-height: 1.4;">
+                                        Si me quieres ver, correctamente debes responder.
+                                    </p>`;
+}
 
 // Función principal del cronómetro
 function actualizarCronometro(reset = false) {
@@ -39,15 +46,16 @@ function actualizarCronometro(reset = false) {
         cronometroElem.textContent = "02:00";
         return;
     }
-    
-    if (cronometro) return; // Evita múltiples cronómetros
-    
+
+    if (cronometro)
+        return; // Evita múltiples cronómetros
+
     cronometro = setInterval(() => {
         tiempo--;
         const min = String(Math.floor(tiempo / 60)).padStart(2, "0");
         const seg = String(tiempo % 60).padStart(2, "0");
         cronometroElem.textContent = `${min}:${seg}`;
-        
+
         if (tiempo <= 0) {
             clearInterval(cronometro);
             cronometro = null;
@@ -70,6 +78,9 @@ function empezar() {
         actualizarCronometro();
         juegoActivo = true;
         habilitarTeclado();
+        // CAMBIO: Restaurar el mensaje inicial en lugar de dejar vacío
+        mostrarMensajeInicial();
+
     }
 }
 
@@ -80,14 +91,14 @@ function reiniciarJuego() {
     errores = 0;
     letrasUsadas = [];
     palabraAdivinada = [];
-    
+
     // Resetear interfaz
     erroresElem.textContent = "Errores: 0/6";
     pistaElem.textContent = "¡Adivina la palabra!";
     mostrarPalabraElem.textContent = "_ _ _ _ _ _ _";
     ahorcadoElem.innerHTML = "";
-    imagenProgresoElem.innerHTML = "";
-    
+    imagenProgresoElem.innerHTML = ``;
+
     // Habilitar todas las teclas
     habilitarTodasLasTeclas();
     cerrarModal();
@@ -110,10 +121,8 @@ function pausarJuego() {
 function salirJuego() {
     actualizarCronometro(true); // Reset del cronómetro
     juegoActivo = false;
-    if (confirm("¿Estás seguro de que quieres salir del juego?")) {
-        // Aquí puedes redirigir a otra página o cerrar la aplicación
-        reiniciarJuego();
-    }
+    reiniciarJuego();
+    window.location.href = 'Controlador?menu=Principal';
 }
 
 // Función para inicializar el juego
@@ -122,15 +131,15 @@ function inicializarJuego() {
     const palabraSeleccionada = palabrasConPistas[Math.floor(Math.random() * palabrasConPistas.length)];
     palabraSecreta = palabraSeleccionada.palabra;
     pistaElem.textContent = palabraSeleccionada.pista;
-    
+
     // Inicializar array de palabra adivinada
     palabraAdivinada = Array(palabraSecreta.length).fill('_');
     actualizarPalabraMostrada();
-    
+
     // Resetear errores
     errores = 0;
     erroresElem.textContent = "Errores: 0/6";
-    
+
     // Mostrar imagen por defecto del ahorcado
     actualizarDibujoAhorcado();
 }
@@ -140,10 +149,10 @@ function adivinarLetra(letra) {
     if (!juegoActivo || letrasUsadas.includes(letra)) {
         return;
     }
-    
+
     letrasUsadas.push(letra);
     deshabilitarTecla(letra);
-    
+
     if (palabraSecreta.includes(letra)) {
         // Letra correcta
         for (let i = 0; i < palabraSecreta.length; i++) {
@@ -153,7 +162,7 @@ function adivinarLetra(letra) {
         }
         actualizarPalabraMostrada();
         actualizarImagenProgreso();
-        
+
         // Verificar si ganó
         if (!palabraAdivinada.includes('_')) {
             juegoActivo = false;
@@ -165,7 +174,7 @@ function adivinarLetra(letra) {
         errores++;
         erroresElem.textContent = `Errores: ${errores}/6`;
         actualizarDibujoAhorcado();
-        
+
         // Verificar si perdió
         if (errores >= maxErrores) {
             juegoActivo = false;
@@ -190,17 +199,17 @@ function actualizarDibujoAhorcado() {
         "2.png", // Error 2
         "3.png", // Error 3
         "4.png", // Error 4
-        "5.png", // Error 5
+        "Cinco.png", // Error 5
         "6.png"  // Error 6 (juego terminado)
     ];
-    
+
     // Limpiar el contenido anterior
     ahorcadoElem.innerHTML = "";
-    
+
     // Crear el elemento imagen
     const img = document.createElement("img");
     img.className = "imagen-ahorcado";
-    
+
     // Si hay errores, mostrar la imagen correspondiente al error
     if (errores > 0 && errores <= 6) {
         img.src = `${contextPath}/Images/${imagenesAhorcado[errores]}`;
@@ -210,15 +219,50 @@ function actualizarDibujoAhorcado() {
         img.src = `${contextPath}/Images/${imagenesAhorcado[0]}`;
         img.alt = "Ahorcado - Estado inicial";
     }
-    
+
     // Agregar la imagen al contenedor
     ahorcadoElem.appendChild(img);
 }
 
-// Función para actualizar la imagen progresiva (cuando acierta letras)
+// Función para actualizar la imagen progresiva (cuando resuelve completamente la palabra)
 function actualizarImagenProgreso() {
-    const progreso = (palabraAdivinada.filter(letra => letra !== '_').length / palabraSecreta.length) * 100;
-        
+    // Limpiar el contenido anterior del div imagenProgreso
+    imagenProgresoElem.innerHTML = "";
+
+    // Solo mostrar imagen si la palabra está completamente resuelta
+    if (!palabraAdivinada.includes('_')) {
+        // Crear el elemento imagen
+        const img = document.createElement("img");
+        img.className = "imagen-progreso";
+
+        // Determinar qué imagen mostrar según la palabra secreta
+        let nombreImagen = "";
+        switch (palabraSecreta) {
+            case "MURCIELAGO":
+                nombreImagen = "Murcielago.jpg";
+                break;
+            case "COCODRILO":
+                nombreImagen = "Cocodrilo.jpg";
+                break;
+            case "PATINETA":
+                nombreImagen = "Patineta.jpg";
+                break;
+            case "MICROFONO":
+                nombreImagen = "Microfono.jpg";
+                break;
+            case "ROMPECABEZAS":
+                nombreImagen = "Rompecabezas.jpg";
+                break;
+            default:
+                nombreImagen = "default.jpg"; // Por si agregas más palabras
+        }
+
+        img.src = `${contextPath}/Images/${nombreImagen}`;
+        img.alt = `Imagen de ${palabraSecreta}`;
+
+        // Agregar la imagen al contenedor
+        imagenProgresoElem.appendChild(img);
+    }
 }
 
 // Funciones para manejar el teclado
@@ -268,7 +312,7 @@ function cerrarModal() {
 }
 
 // Event listeners adicionales
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function (event) {
     if (juegoActivo) {
         const letra = event.key.toUpperCase();
         if (letra.match(/[A-ZÑ]/) && letra.length === 1) {
@@ -278,13 +322,13 @@ document.addEventListener('keydown', function(event) {
 });
 
 // Cerrar modal al hacer clic fuera de él
-modalElem.addEventListener('click', function(event) {
+modalElem.addEventListener('click', function (event) {
     if (event.target === modalElem) {
         cerrarModal();
     }
 });
 
 // Inicializar el juego al cargar la página
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     reiniciarJuego();
 });

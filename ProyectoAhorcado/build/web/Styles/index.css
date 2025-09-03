@@ -1,290 +1,191 @@
+/* Reset y configuración base */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+    overflow: hidden; /* Elimina completamente el scroll */
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url('../Images/Fondo.gif');
+    background-image: url('../Images/FondoPrincipal.gif');
     background-size: cover;
-    background-position: center;
-    min-height: 100vh;
-    padding: 20px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100vh;
+    width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: fixed; /* Fija el body para evitar cualquier scroll */
+    top: 0;
+    left: 0;
 }
 
-.contenedor-juego {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(15px);
-    border-radius: 25px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    padding: 30px;
-    max-width: 1000px;
+/* Overlay más sutil para permitir ver mejor el fondo */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(20, 25, 40, 0.15) 0%, rgba(0, 0, 0, 0.25) 50%, rgba(20, 25, 40, 0.15) 100%);
+    pointer-events: none;
+    z-index: 0;
 }
 
-/* Título */
-.titulo {
+/* Contenedor principal */
+.main-container {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(240, 240, 240, 0.18));
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 30px;
+    padding: 40px 35px; /* Reducido el padding para que quepa mejor */
     text-align: center;
-    font-size: 3.5em;
-    font-weight: bold;
-    color: #ffff;
-    margin-bottom: 30px;
-    background: white;
-    background-size: 300% 300%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    z-index: 2;
+    animation: slideIn 1s ease-out;
+    max-width: 480px;
+    max-height: 85vh; /* Altura máxima para evitar overflow */
+    width: 90vw;
+    overflow: hidden; /* Evita que el contenido del container genere scroll */
 }
 
-@keyframes gradiente {
-    0% {
-        background-position: 0% 50%;
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
     }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }
 
-/* Sección principal */
-.seccion-principal {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    margin-bottom: 30px;
-}
-
-/* Sección del ahorcado (lado izquierdo) */
-.seccion-ahorcado {
-    background: rgba(0, 0, 0, 0.8);
-    border-radius: 15px;
-    padding: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 300px;
-}
-
-.dibujo-ahorcado {
+/* Estilos del header */
+.header h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem); /* Tamaño responsivo */
     color: #fff;
-    font-family: monospace;
-    font-size: 1.2em;
-    white-space: pre-line;
-    text-align: center;
+    margin-bottom: 15px; /* Reducido el margen */
+    background: linear-gradient(45deg, #fff, #f0f8ff);
+    background-clip: text;
+    animation: glow 2s ease-in-out infinite alternate;
     line-height: 1.2;
 }
 
-/* Panel derecho */
-.panel-derecho {
+@keyframes glow {
+    from { 
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)); 
+    }
+    to { 
+        filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.6)); 
+    }
+}
+
+.header p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(1rem, 2.5vw, 1.1rem); /* Tamaño responsivo */
+    margin-bottom: 12px; /* Reducido el margen */
+    line-height: 1.4;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Sección de controles */
+.controls-section {
+    margin-top: 25px; /* Reducido el margen */
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-/* Temporizador */
-.seccion-temporizador {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-    padding: 15px;
-    text-align: center;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-.pantalla-tiempo {
-    font-size: 2em;
-    font-weight: bold;
-    color: #333;
-    font-family: 'Courier New', monospace;
-}
-
-/* Imagen progresiva */
-.imagen-progresiva {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-    padding: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    flex: 1;
-    display: flex;
-    align-items: center;
+    gap: 25px; /* Reducido el gap */
     justify-content: center;
+    flex-wrap: wrap;
 }
 
-.contenedor-imagen {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    width: 100%;
-    max-width: 200px;
-}
-
-.parte-imagen {
-    background: linear-gradient(145deg, #e0e7ff, #c7d2fe);
-    border-radius: 10px;
-    padding: 15px;
-    text-align: center;
-    font-size: 2em;
-    opacity: 0.3;
-    transition: opacity 0.5s ease;
-    border: 2px solid rgba(99, 102, 241, 0.3);
-}
-
-.parte-imagen.revelada {
-    opacity: 1;
-    background: linear-gradient(145deg, #fef3c7, #fde68a);
-    border-color: #f59e0b;
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
-}
-
-/* Sección inferior */
-.seccion-inferior {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    margin-bottom: 30px;
-}
-
-/* Pista */
-.seccion-pista {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-    padding: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-.titulo-pista {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.texto-pista {
-    font-size: 1.1em;
-    color: #555;
-}
-
-/* ==========================================
-   BOTONES CON EFECTO SALTITO 3D
-   ========================================== */
-.botones-control {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
-
-.boton {
+/* Botones 3D con tema azul */
+.button {
     position: relative;
+    background: none;
     border: none;
-    background: rgba(12, 30, 62, 0.6);
-    color: white;
-    padding: 0;
-    outline: none;
     cursor: pointer;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    width: 100%;
     transform-style: preserve-3d;
     transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    outline: none;
 }
 
-.boton:hover {
+.button:hover {
     transform: translateY(-5px) rotateX(15deg);
 }
 
-.boton:active {
+.button:active {
     transform: translateY(0px) rotateX(0deg);
 }
 
-.boton .sombra {
+.shadow {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(12, 30, 62, 0.6);
-    border-radius: 12px;
-    transform: translateY(2px);
-    transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    transform: translateZ(-20px) rotateX(-90deg) translateY(20px);
+    transition: all 0.3s ease;
 }
 
-.boton .borde {
+.edge {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 12px;
-    background: linear-gradient(
-        to left,
-        #0c1e3e 0%,
-        #19366b 8%,
-        #19366b 92%,
-        #0c1e3e 100%
-    );
+    background: linear-gradient(135deg, #0c1e3e, #1e2a5e);
+    border-radius: 15px;
+    transform: translateZ(-10px);
 }
 
-.boton .frente {
+.front {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 20px;
-    font-size: 1.1em;
-    color: white;
-    background: rgba(12, 30, 62, 0.6);
+    background: linear-gradient(145deg, rgba(15, 39, 77, 0.95), rgba(25, 54, 107, 0.98));
     backdrop-filter: blur(10px);
-    border-radius: 12px;
-    transform: translateY(-4px);
-    transition: all 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+    padding: 15px 30px; /* Reducido el padding */
+    border-radius: 15px;
+    color: white;
+    font-size: clamp(0.9rem, 2vw, 1rem); /* Tamaño responsivo */
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     border: 1px solid rgba(56, 97, 151, 0.4);
     box-shadow: 
-        inset 0 1px 0 rgba(255, 255, 255, 0.2),
-        0 4px 15px rgba(0, 0, 0, 0.2);
-    font-weight: bold;
-    text-shadow: 0 1px 2px rgba(12, 30, 62, 0.6);
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        0 2px 4px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
     overflow: hidden;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
-.boton:hover .sombra {
-    transform: translateY(4px);
-    transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
-    background: rgba(12, 30, 62, 0.8);
-}
-
-.boton:hover .frente {
-    transform: translateY(-6px);
-    background: rgba(12, 30, 62, 0.8);
+.button:hover .front {
+    background: linear-gradient(145deg, rgba(25, 54, 107, 1), rgba(35, 74, 137, 1));
     box-shadow: 
-        inset 0 1px 0 rgba(255, 255, 255, 0.3),
-        0 8px 25px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 4px 12px rgba(12, 30, 62, 0.6),
         0 0 20px rgba(25, 54, 107, 0.5);
     border-color: rgba(56, 97, 151, 0.6);
-    color: white;
-    transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
 }
 
-.boton:active .sombra {
-    transform: translateY(1px);
-    transition: transform 34ms;
-}
-
-.boton:active .frente {
-    transform: translateY(-2px);
-    transition: transform 34ms;
+.button:hover .shadow {
+    transform: translateZ(-25px) rotateX(-90deg) translateY(25px);
+    background: rgba(0, 0, 0, 0.5);
 }
 
 /* Efecto de brillo en los botones */
-.boton .frente::before {
+.front::before {
     content: '';
     position: absolute;
     top: -50%;
@@ -297,11 +198,11 @@ body {
     opacity: 0;
 }
 
-.boton:hover .frente::before {
-    animation: brillo 0.8s ease-out;
+.button:hover .front::before {
+    animation: shine 0.8s ease-out;
 }
 
-@keyframes brillo {
+@keyframes shine {
     0% { 
         transform: translateX(-100%) translateY(-100%) rotate(45deg); 
         opacity: 0; 
@@ -315,513 +216,195 @@ body {
     }
 }
 
-.boton .frente span {
-    user-select: none;
-}
-
-/* Área del juego */
-.area-juego {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 25px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-}
-
-/* Información del juego */
-.informacion-juego {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.contador-errores {
-    color: red;
-    font-size: 1.3em;
-    font-weight: bold;
-}
-
-/* Letras utilizadas */
-.letras-adivinadas {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.letras-usadas {
-    color: #ffeb3b;
-    font-size: 1.3em;
-    font-weight: bold;
-    letter-spacing: 0.2em;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
-}
-
-/* Líneas de la palabra */
-.lineas-palabra {
-    text-align: center;
-    margin-bottom: 30px;
-    padding: 20px 0;
-    border-top: 3px dashed rgba(255, 255, 255, 0.5);
-    border-bottom: 3px dashed rgba(255, 255, 255, 0.5);
-}
-
-.espacios-letras {
-    font-size: 2.5em;
-    font-weight: bold;
-    letter-spacing: 0.3em;
-    color: #fff;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-    min-height: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* ==========================================
-   TECLADO - ESTILO PERSONALIZADO
-   ========================================== */
-.teclado {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: clamp(8px, 1.2vw, 12px);
-    max-width: min(750px, 95vw);
-    margin: 0 auto;
-    padding: clamp(12px, 2.5vw, 20px);
-    background: rgba(12, 30, 62, 0.6);
-    border-radius: clamp(15px, 2.5vw, 20px);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-}
-
-.fila-teclado {
-    display: flex;
-    gap: clamp(4px, 1vw, 8px);
-    justify-content: center;
-    width: 100%;
-    flex-wrap: nowrap;
-}
-
-.tecla {
-    background: rgba(12, 30, 62, 0.6);
-    color: white;
-    border: none;
-    border-radius: clamp(8px, 1.5vw, 12px);
-    padding: clamp(8px, 2vw, 16px) clamp(10px, 2.5vw, 20px);
-    font-size: clamp(0.9rem, 2.2vw, 1.4em);
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.41);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    min-width: clamp(35px, 8vw, 55px);
-    min-height: clamp(35px, 8vw, 55px);
-    max-width: clamp(45px, 9vw, 65px);
-    max-height: clamp(45px, 9vw, 65px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    flex: 0 0 auto;
-}
-
-/* Efecto brillo/shimmer para las teclas */
-.tecla::before {
-    content: '';
+/* Efectos de ondas */
+.ripple {
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.5s;
+    border-radius: 50%;
+    background: rgba(56, 97, 151, 0.5);
+    transform: scale(0);
+    animation: rippleEffect 0.6s linear;
 }
 
-.tecla:hover {
-    background: rgba(12, 30, 62, 0.8);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(26, 23, 87, 0.4);
-}
-
-.tecla:hover::before {
-    left: 100%;
-}
-
-.tecla:active {
-    transform: translateY(0px);
-    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
-}
-
-/* Estados especiales del teclado */
-.tecla:disabled {
-    background: linear-gradient(145deg, #6b7280, #4b5563);
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
-    opacity: 0.6;
-}
-
-.tecla:disabled::before {
-    display: none;
-}
-
-.tecla.correcta {
-    background: linear-gradient(145deg, #10b981, #059669);
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-    animation: pulsoCorreto 0.6s ease;
-}
-
-.tecla.incorrecta {
-    background: linear-gradient(145deg, #ef4444, #dc2626);
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-    animation: sacudidaIncorrecta 0.6s ease;
-}
-
-/* Animaciones para retroalimentación visual */
-@keyframes pulsoCorreto {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
+@keyframes rippleEffect {
+    to {
+        transform: scale(4);
+        opacity: 0;
     }
 }
 
-@keyframes sacudidaIncorrecta {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    25% {
-        transform: translateX(-5px);
-    }
-    75% {
-        transform: translateX(5px);
-    }
-}
-
-/* Modal */
-.modal {
-    position: fixed;
+/* Efecto de puzzle en el fondo */
+.puzzle-bg {
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+    opacity: 0.1;
+    z-index: 1;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(25, 54, 107, 0.4) 2px, transparent 2px),
+        radial-gradient(circle at 75% 25%, rgba(35, 74, 137, 0.4) 2px, transparent 2px),
+        radial-gradient(circle at 25% 75%, rgba(12, 30, 62, 0.4) 2px, transparent 2px),
+        radial-gradient(circle at 75% 75%, rgba(56, 97, 151, 0.4) 2px, transparent 2px);
+    background-size: 50px 50px;
+    animation: puzzleMove 10s linear infinite;
 }
 
-.contenido-modal {
-    background: linear-gradient(145deg, #667eea, #764ba2);
-    padding: 40px;
-    border-radius: 20px;
-    text-align: center;
-    color: white;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+@keyframes puzzleMove {
+    0% { 
+        transform: translateX(0) translateY(0); 
+    }
+    100% { 
+        transform: translateX(50px) translateY(50px); 
+    }
 }
 
-.contenido-modal h2 {
-    font-size: 2.5em;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+/* Estilos adicionales para las animaciones de los botones */
+/* Animación para agrandar el botón "Sí" */
+.button.agrandar {
+    animation: agrandarBoton 0.5s ease-out forwards;
+    transform-origin: center;
 }
 
-.contenido-modal p {
-    font-size: 1.3em;
-    margin-bottom: 30px;
+@keyframes agrandarBoton {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3);
+    }
+    100% {
+        transform: scale(1.2);
+    }
 }
 
-/* ==========================================
-   DISEÑO RESPONSIVO
-   ========================================== */
+/* Animación para achicar el botón "No" */
+.button.achicar {
+    animation: achicarBoton 0.5s ease-out forwards;
+    transform-origin: center;
+}
 
-/* Escritorio y laptop grande (1200px+) */
-@media (min-width: 1200px) {
-    .teclado {
-        max-width: 750px;
-        padding: 20px;
+@keyframes achicarBoton {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.6);
+    }
+    100% {
+        transform: scale(0.7);
+    }
+}
+
+/* Efecto de hover mejorado para el botón "Sí" después de la animación */
+.button.agrandar:hover {
+    transform: scale(1.3) translateY(-5px) rotateX(15deg) !important;
+    box-shadow: 0 10px 30px rgba(25, 54, 107, 0.6);
+}
+
+/* Efecto de hover para el botón "No" después de la animación */
+.button.achicar:hover {
+    transform: scale(0.8) translateY(-5px) rotateX(15deg) !important;
+    opacity: 0.8;
+}
+
+/* Estilo adicional para hacer el botón "Sí" más llamativo después de la animación */
+.button.agrandar .front {
+    background: linear-gradient(135deg, #0f274d, #19366b, #234a89, #386197) !important;
+    animation: brillarAzul 2s infinite alternate;
+}
+
+.button.agrandar .edge {
+    background: linear-gradient(135deg, #0a1a36, #0c1e3e) !important;
+}
+
+@keyframes brillarAzul {
+    0% {
+        box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.15),
+            0 2px 4px rgba(0, 0, 0, 0.4),
+            0 0 15px rgba(25, 54, 107, 0.7);
+    }
+    100% {
+        box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.15),
+            0 2px 4px rgba(0, 0, 0, 0.4),
+            0 0 25px rgba(25, 54, 107, 0.9), 
+            0 0 35px rgba(12, 30, 62, 0.8),
+            0 0 45px rgba(35, 74, 137, 0.6);
+    }
+}
+
+/* Mantener la compatibilidad con las animaciones existentes */
+.button.agrandar:active {
+    transform: scale(1.1) translateY(0px) rotateX(0deg) !important;
+}
+
+.button.achicar:active {
+    transform: scale(0.6) translateY(0px) rotateX(0deg) !important;
+}
+
+/* Responsive Design mejorado */
+@media (max-width: 768px) {
+    .main-container {
+        padding: 30px 25px;
+        max-width: 95vw;
+        max-height: 90vh;
+    }
+    
+    .controls-section {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .button {
+        width: 100%;
+        max-width: 180px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-container {
+        padding: 25px 20px;
+        max-height: 95vh;
+    }
+    
+    .header h1 {
+        margin-bottom: 10px;
+    }
+    
+    .header p {
+        margin-bottom: 8px;
+    }
+    
+    .front {
+        padding: 12px 20px;
+    }
+    
+    .controls-section {
+        margin-top: 15px;
         gap: 12px;
     }
-
-    .fila-teclado {
-        gap: 8px;
-    }
-
-    .tecla {
-        min-width: 55px;
-        min-height: 55px;
-        max-width: 65px;
-        max-height: 65px;
-        padding: 16px 20px;
-        font-size: 1.4em;
-    }
 }
 
-/* Tablet horizontal (768px - 1199px) */
-@media (max-width: 1199px) and (min-width: 768px) {
-    .seccion-principal {
-        grid-template-columns: 1fr;
-        gap: 20px;
+/* Pantallas muy pequeñas */
+@media (max-height: 600px) {
+    .main-container {
+        padding: 20px 25px;
+        max-height: 95vh;
     }
-
-    .seccion-inferior {
-        grid-template-columns: 1fr;
-        gap: 20px;
+    
+    .header h1 {
+        margin-bottom: 8px;
     }
-
-    .teclado {
-        max-width: 650px;
-        padding: 18px;
-        gap: 10px;
+    
+    .header p {
+        margin-bottom: 6px;
     }
-
-    .fila-teclado {
-        gap: 7px;
+    
+    .controls-section {
+        margin-top: 12px;
     }
-
-    .tecla {
-        min-width: 48px;
-        min-height: 48px;
-        max-width: 58px;
-        max-height: 58px;
-        padding: 14px 18px;
-        font-size: 1.3em;
-    }
-
-    .titulo {
-        font-size: 3em;
-    }
-}
-
-/* Tablet vertical (481px - 767px) */
-@media (max-width: 767px) and (min-width: 481px) {
-    .seccion-principal {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-
-    .seccion-inferior {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-
-    .botones-control {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-    }
-
-    .teclado {
-        max-width: 500px;
-        padding: 15px;
-        gap: 8px;
-    }
-
-    .fila-teclado {
-        gap: 6px;
-    }
-
-    .tecla {
-        min-width: 42px;
-        min-height: 42px;
-        max-width: 52px;
-        max-height: 52px;
-        padding: 12px 16px;
-        font-size: 1.2em;
-        border-radius: 10px;
-    }
-
-    .titulo {
-        font-size: 2.5em;
-    }
-
-    .contenedor-imagen {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .espacios-letras {
-        font-size: 2.2em;
-    }
-}
-
-/* Móvil grande (376px - 480px) */
-@media (max-width: 480px) and (min-width: 376px) {
-    .botones-control {
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
-
-    .teclado {
-        max-width: 420px;
-        padding: 12px;
-        gap: 6px;
-    }
-
-    .fila-teclado {
-        gap: 5px;
-    }
-
-    .tecla {
-        min-width: 38px;
-        min-height: 38px;
-        max-width: 48px;
-        max-height: 48px;
-        padding: 10px 14px;
-        font-size: 1.1em;
-        border-radius: 8px;
-    }
-
-    .espacios-letras {
-        font-size: 2em;
-    }
-
-    .contenedor-juego {
-        padding: 20px;
-    }
-
-    .titulo {
-        font-size: 2.2em;
-    }
-}
-
-/* Móvil pequeño (hasta 375px) */
-@media (max-width: 375px) {
-    .teclado {
-        max-width: 320px;
-        padding: 10px;
-        gap: 5px;
-    }
-
-    .fila-teclado {
-        gap: 3px;
-    }
-
-    .tecla {
-        min-width: 32px;
-        min-height: 32px;
-        max-width: 42px;
-        max-height: 42px;
-        padding: 8px 12px;
-        font-size: 1rem;
-        border-radius: 6px;
-    }
-
-    .espacios-letras {
-        font-size: 1.8em;
-        letter-spacing: 0.2em;
-    }
-
-    .contenedor-juego {
-        padding: 15px;
-    }
-
-    .titulo {
-        font-size: 2em;
-    }
-
-    .seccion-ahorcado {
-        min-height: 200px;
-        padding: 15px;
-    }
-
-    .dibujo-ahorcado {
-        font-size: 1em;
-    }
-
-    .pantalla-tiempo {
-        font-size: 1.5em;
-    }
-
-    .parte-imagen {
-        padding: 10px;
-        font-size: 1.5em;
-    }
-}
-
-/* Móvil ultra-pequeño (hasta 320px) */
-@media (max-width: 320px) {
-    .teclado {
-        max-width: 280px;
-        padding: 8px;
-        gap: 4px;
-    }
-
-    .fila-teclado {
-        gap: 2px;
-    }
-
-    .tecla {
-        min-width: 28px;
-        min-height: 28px;
-        max-width: 38px;
-        max-height: 38px;
-        padding: 6px 10px;
-        font-size: 0.9rem;
-        border-radius: 5px;
-    }
-
-    .espacios-letras {
-        font-size: 1.5em;
-        letter-spacing: 0.1em;
-    }
-
-    .titulo {
-        font-size: 1.8em;
-    }
-
-    .contenedor-juego {
-        padding: 12px;
-    }
-}
-
-/* Orientación horizontal en móviles */
-@media (max-height: 500px) and (orientation: landscape) {
-    .teclado {
-        padding: 8px;
-        gap: 4px;
-    }
-
-    .tecla {
-        min-width: 35px;
-        min-height: 30px;
-        max-width: 45px;
-        max-height: 35px;
-        padding: 6px 12px;
-        font-size: 1rem;
-    }
-
-    .fila-teclado {
-        gap: 4px;
-    }
-
-    .titulo {
-        font-size: 2em;
-        margin-bottom: 15px;
-    }
-
-    .seccion-principal,
-    .seccion-inferior {
-        margin-bottom: 15px;
-    }
-}
-
-/* Estilos para las imágenes del ahorcado */
-.imagen-ahorcado {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Mantiene la proporción de la imagen */
-    border-radius: 10px;
-    transition: opacity 0.3s ease-in-out; /* Transición suave al cambiar imagen */
-}
-
-/* Ajustar el contenedor del dibujo para las imágenes */
-.dibujo-ahorcado {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    min-height: 300px; /* Ajusta según tus necesidades */
 }
