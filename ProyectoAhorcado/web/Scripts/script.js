@@ -121,7 +121,7 @@ function salirJuego() {
     actualizarCronometro(true); // Reset del cronómetro
     juegoActivo = false;
     reiniciarJuego();
-    window.location.href = 'Controlador?menu=Principal';
+    window.location.href = 'Controlador?menu=MenuPrincipal';
 }
 
 // Función para inicializar el juego

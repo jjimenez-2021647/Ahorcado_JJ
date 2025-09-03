@@ -119,6 +119,20 @@ call sp_EditarUsuario(3, 'Isabel', 'López', 'isabel.lopez@gmail.com', 'ClaveSeg
 call sp_EditarUsuario(4, 'Ricardo', 'Estrada', 'ricardo.estrada@gmail.com','REstrada!19');
 call sp_EditarUsuario(5, 'Valeria', 'Guzmán', 'valeria.guzman@gmail.com', 'VGuzman@20');
 
+-- Editar Usuario Creado en el login 
+Delimiter //
+	Create procedure sp_EditarUsuarioLogin(
+    in _codigoUsuario int,
+    in _nombreUsuario varchar(100),
+    in _apellidoUsuario varchar(100)) 
+		Begin
+			Update Usuarios
+				set nombreUsuario = _nombreUsuario,
+				apellidoUsuario = _apellidoUsuario
+					where codigoUsuario = _codigoUsuario;
+        End //
+Delimiter ;
+
 -- --------------------------- Entidad Palabras --------------------------- 
 -- Agregar Palabras
 Delimiter //
