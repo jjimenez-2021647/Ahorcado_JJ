@@ -13,7 +13,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>K.C - Login</title>
+        <title>JJ - Login</title>
         <link rel="icon" type="image/x-icon" href="Images/Icono.jpg">
         <link rel="stylesheet" href="Styles/index.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
@@ -37,9 +37,9 @@
                         <p>Donde encuentras los mejores juegos</p>
                         <a href="https://wa.link/kdxg6x" class="btnContacto">Contactanos</a>
                         <div class="redes-sociales">
-                            <a href="https://www.facebook.com/"><i
+                            <a href="https://www.facebook.com/josue.jimenez.633011/"><i
                                     class="fa-brands fa-facebook-f"></i></a>
-                            <a href="https://www.instagram.com/"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="https://www.instagram.com/jos_ue_jime_nez/"><i class="fa-brands fa-instagram"></i></a>
                             <a href="https://wa.link/kdxg6x"><i class="fa-brands fa-whatsapp"></i></a>
                         </div>
                     </div>
@@ -68,6 +68,9 @@
                                                         <input type="password" name="txtPassword" id="txtPassword" class="form-style" placeholder="Contraseña" autocomplete="off" required>
                                                         <i class="input-icon material-icons">lock</i>
                                                     </div>
+                                                    <c:if test="${not empty error}">
+                                                        <div class="alert-error-small">${error}</div>
+                                                    </c:if>
                                                     <center>
                                                         <input type="submit" class="btnIniciar" name="accion" value="Ingresar" placeholder="Entrar">
                                                     </center>
@@ -81,7 +84,7 @@
                                         <!-- FORMULARIO DE REGISTRO -->
                                         <div class="card-back">
                                             <div class="center-wrap">
-                                                <form action="Controlador?menu=Usuarios&accion=RegistroLogin" method="post">
+                                                <form action="Controlador?menu=Principal&accion=RegistroLogin" method="post">
                                                     <h4 class="heading">Registrarse</h4>
 
                                                     <div class="form-group">

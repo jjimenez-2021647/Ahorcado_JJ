@@ -3,23 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/web/Styles/index.css</file>
-            <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/src/java/Controlador/MostrarImagen.java</file>
-            <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/web/Index/rompecabezas2.jsp</file>
-            <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/web/Scripts/script.js</file>
-            <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/src/java/Controlador/Controlador.java</file>
-            <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/web/Index/MenuPrincipal.jsp</file>
-            <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/src/java/com/proyectoahorcado/modelo/Palabras.java</file>
             <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/web/index.jsp</file>
             <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/src/java/com/proyectoahorcado/modelo/Usuarios.java</file>
             <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/src/java/com/proyectoahorcado/modelo/UsuariosDAO.java</file>
-            <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/src/java/Controlador/ImagenesActualizar.java</file>
+            <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/web/Scripts/script.js</file>
             <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/src/java/Controlador/Validar.java</file>
             <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/src/java/com/proyectoahorcado/modelo/PalabrasDAO.java</file>
-            <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/web/Index/Ahorcado.jsp</file>
-            <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/web/Index/rompecabezas.jsp</file>
-            <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/src/java/com/proyectoahorcado/config/Conexion.java</file>
-            <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/web/Styles/MenuPrincipal.css</file>
+            <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/nbproject/build-impl.xml</file>
+            <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/src/java/Controlador/Controlador.java</file>
+            <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/src/conf/MANIFEST.MF</file>
+            <file>file:/C:/Ahorcado_JJ/ProyectoAhorcado/src/java/com/proyectoahorcado/modelo/Palabras.java</file>
         </group>
     </open-files>
 </project-private>
