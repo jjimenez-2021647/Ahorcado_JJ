@@ -8,6 +8,7 @@ let palabraAdivinada = [];
 let errores = 0;
 const maxErrores = 6;
 let letrasUsadas = [];
+let palabrasConPistas = []; 
 
 // Obtener elementos del HTML
 let cronometroElem = document.getElementById("tiempo");
@@ -21,14 +22,15 @@ let tituloModalElem = document.getElementById("tituloModal");
 let mensajeModalElem = document.getElementById("mensajeModal");
 let tecladoElem = document.getElementById("teclado");
 
-// Banco de palabras con pistas 
-const palabrasConPistas = [
-    {palabra: "MURCIELAGO", pista: "Este animal es pequeño, su nombre lleva todas las vocales."},
-    {palabra: "COCODRILO", pista: "Este animal es grande, verde, de dientes fuertes."},
-    {palabra: "PATINETA", pista: "Tengo 4 ruedas, lija y tornillos."},
-    {palabra: "MICROFONO", pista: "Me usan cuando quieren ser escuchados."},
-    {palabra: "ROMPECABEZAS", pista: "Soy un dolor de cabeza para quienes no tienen paciencia."},
-];
+//  Cargar palabras desde la DB
+function cargarPalabras() {
+    return fetch("Controlador?menu=PalabrasJuego")
+        .then(response => response.json())
+        .then(data => {
+            palabrasConPistas = data;
+        })
+        .catch(error => console.error("Error cargando palabras:", error));
+}
 
 // Función para mostrar el mensaje inicial
 function mostrarMensajeInicial() {
@@ -47,8 +49,7 @@ function actualizarCronometro(reset = false) {
         return;
     }
 
-    if (cronometro)
-        return; // Evita múltiples cronómetros
+    if (cronometro) return; // Evita múltiples cronómetros
 
     cronometro = setInterval(() => {
         tiempo--;
@@ -59,7 +60,7 @@ function actualizarCronometro(reset = false) {
         if (tiempo <= 0) {
             clearInterval(cronometro);
             cronometro = null;
-            tiempoAgotado(); // Función que maneja cuando se acaba el tiempo
+            tiempoAgotado();
         }
     }, 1000);
 }
@@ -71,90 +72,83 @@ function tiempoAgotado() {
     deshabilitarTeclado();
 }
 
-// Función para empezar el juego (conecta con el botón "Empezar")
+// Función para empezar el juego
 function empezar() {
     if (!juegoActivo) {
         inicializarJuego();
         actualizarCronometro();
         juegoActivo = true;
         habilitarTeclado();
-        // CAMBIO: Restaurar el mensaje inicial en lugar de dejar vacío
         mostrarMensajeInicial();
-
     }
 }
 
-// Función para reiniciar el juego (conecta con el botón "Reiniciar")
+// Función para reiniciar el juego
 function reiniciarJuego() {
-    actualizarCronometro(true); // Reset del cronómetro
+    actualizarCronometro(true);
     juegoActivo = false;
     errores = 0;
     letrasUsadas = [];
     palabraAdivinada = [];
 
-    // Resetear interfaz
     erroresElem.textContent = "Errores: 0/6";
     pistaElem.textContent = "¡Adivina la palabra!";
     mostrarPalabraElem.textContent = "_ _ _ _ _ _ _";
     ahorcadoElem.innerHTML = "";
     imagenProgresoElem.innerHTML = ``;
 
-    // Habilitar todas las teclas
     habilitarTodasLasTeclas();
     cerrarModal();
 }
 
-// Función para pausar el juego (conecta con el botón "Pausar")
+// Función para pausar el juego
 function pausarJuego() {
     if (cronometro) {
         clearInterval(cronometro);
         cronometro = null;
         deshabilitarTeclado();
     } else if (juegoActivo) {
-        // Si está pausado, reanudar
         actualizarCronometro();
         habilitarTeclado();
     }
 }
 
-// Función para salir del juego (conecta con el botón "Salir")
+// Función para salir del juego
 function salirJuego() {
-    actualizarCronometro(true); // Reset del cronómetro
+    actualizarCronometro(true);
     juegoActivo = false;
     reiniciarJuego();
-    window.location.href = 'Controlador?menu=Principal';
+    window.location.href = 'Controlador?menu=MenuPrincipal';
 }
 
 // Función para inicializar el juego
 function inicializarJuego() {
-    // Seleccionar palabra aleatoria
+    if (palabrasConPistas.length === 0) {
+        alert("No hay palabras cargadas desde la base de datos.");
+        return;
+    }
+
     const palabraSeleccionada = palabrasConPistas[Math.floor(Math.random() * palabrasConPistas.length)];
-    palabraSecreta = palabraSeleccionada.palabra;
+    palabraSecreta = palabraSeleccionada.palabra.toUpperCase();
     pistaElem.textContent = palabraSeleccionada.pista;
 
-    // Inicializar array de palabra adivinada
     palabraAdivinada = Array(palabraSecreta.length).fill('_');
     actualizarPalabraMostrada();
 
-    // Resetear errores
     errores = 0;
     erroresElem.textContent = "Errores: 0/6";
 
-    // Mostrar imagen por defecto del ahorcado
     actualizarDibujoAhorcado();
 }
 
-// Función para adivinar una letra (conecta con las teclas del teclado)
+// Función para adivinar letra
 function adivinarLetra(letra) {
-    if (!juegoActivo || letrasUsadas.includes(letra)) {
-        return;
-    }
+    if (!juegoActivo || letrasUsadas.includes(letra)) return;
 
     letrasUsadas.push(letra);
     deshabilitarTecla(letra);
 
     if (palabraSecreta.includes(letra)) {
-        // Letra correcta
         for (let i = 0; i < palabraSecreta.length; i++) {
             if (palabraSecreta[i] === letra) {
                 palabraAdivinada[i] = letra;
@@ -163,19 +157,16 @@ function adivinarLetra(letra) {
         actualizarPalabraMostrada();
         actualizarImagenProgreso();
 
-        // Verificar si ganó
         if (!palabraAdivinada.includes('_')) {
             juegoActivo = false;
             clearInterval(cronometro);
             mostrarModal("¡Felicitaciones!", "Has ganado el juego y lograste salvar a Jorgito");
         }
     } else {
-        // Letra incorrecta
         errores++;
         erroresElem.textContent = `Errores: ${errores}/6`;
         actualizarDibujoAhorcado();
 
-        // Verificar si perdió
         if (errores >= maxErrores) {
             juegoActivo = false;
             clearInterval(cronometro);
@@ -185,87 +176,50 @@ function adivinarLetra(letra) {
     }
 }
 
-// Función para actualizar la palabra mostrada
+// Mostrar palabra
 function actualizarPalabraMostrada() {
     mostrarPalabraElem.textContent = palabraAdivinada.join(' ');
 }
 
-// Función para actualizar el dibujo del ahorcado con imágenes
+// Dibujo ahorcado
 function actualizarDibujoAhorcado() {
-    // Array de nombres de las imágenes del ahorcado
     const imagenesAhorcado = [
-        "0.png", // Foto por default
-        "1.png", // Error 1
-        "2.png", // Error 2
-        "3.png", // Error 3
-        "4.png", // Error 4
-        "Cinco.png", // Error 5
-        "6.png"  // Error 6 (juego terminado)
+        "0.png", "1.png", "2.png", "3.png", "4.png", "Cinco.png", "6.png"
     ];
 
-    // Limpiar el contenido anterior
     ahorcadoElem.innerHTML = "";
-
-    // Crear el elemento imagen
     const img = document.createElement("img");
     img.className = "imagen-ahorcado";
 
-    // Si hay errores, mostrar la imagen correspondiente al error
     if (errores > 0 && errores <= 6) {
         img.src = `${contextPath}/Images/${imagenesAhorcado[errores]}`;
         img.alt = `Ahorcado - Error ${errores}`;
     } else {
-        // Si no hay errores, mostrar la imagen por defecto
         img.src = `${contextPath}/Images/${imagenesAhorcado[0]}`;
         img.alt = "Ahorcado - Estado inicial";
     }
 
-    // Agregar la imagen al contenedor
     ahorcadoElem.appendChild(img);
 }
 
-// Función para actualizar la imagen progresiva (cuando resuelve completamente la palabra)
+// Imagen de progreso
 function actualizarImagenProgreso() {
-    // Limpiar el contenido anterior del div imagenProgreso
     imagenProgresoElem.innerHTML = "";
 
-    // Solo mostrar imagen si la palabra está completamente resuelta
     if (!palabraAdivinada.includes('_')) {
-        // Crear el elemento imagen
         const img = document.createElement("img");
         img.className = "imagen-progreso";
 
-        // Determinar qué imagen mostrar según la palabra secreta
-        let nombreImagen = "";
-        switch (palabraSecreta) {
-            case "MURCIELAGO":
-                nombreImagen = "Murcielago.jpg";
-                break;
-            case "COCODRILO":
-                nombreImagen = "Cocodrilo.jpg";
-                break;
-            case "PATINETA":
-                nombreImagen = "Patineta.jpg";
-                break;
-            case "MICROFONO":
-                nombreImagen = "Microfono.jpg";
-                break;
-            case "ROMPECABEZAS":
-                nombreImagen = "Rompecabezas.jpg";
-                break;
-            default:
-                nombreImagen = "default.jpg"; // Por si agregas más palabras
-        }
-
+        // Nombre de la imagen dinámico = palabra con mayúscula inicial
+        const nombreImagen = palabraSecreta.charAt(0).toUpperCase() + palabraSecreta.slice(1).toLowerCase() + ".jpg";
         img.src = `${contextPath}/Images/${nombreImagen}`;
         img.alt = `Imagen de ${palabraSecreta}`;
 
-        // Agregar la imagen al contenedor
         imagenProgresoElem.appendChild(img);
     }
 }
 
-// Funciones para manejar el teclado
+// Teclado
 function deshabilitarTecla(letra) {
     const teclas = document.querySelectorAll('.tecla');
     teclas.forEach(tecla => {
@@ -277,15 +231,11 @@ function deshabilitarTecla(letra) {
 }
 
 function deshabilitarTeclado() {
-    const teclas = document.querySelectorAll('.tecla');
-    teclas.forEach(tecla => {
-        tecla.disabled = true;
-    });
+    document.querySelectorAll('.tecla').forEach(tecla => tecla.disabled = true);
 }
 
 function habilitarTeclado() {
-    const teclas = document.querySelectorAll('.tecla');
-    teclas.forEach(tecla => {
+    document.querySelectorAll('.tecla').forEach(tecla => {
         if (!letrasUsadas.includes(tecla.textContent)) {
             tecla.disabled = false;
         }
@@ -293,14 +243,13 @@ function habilitarTeclado() {
 }
 
 function habilitarTodasLasTeclas() {
-    const teclas = document.querySelectorAll('.tecla');
-    teclas.forEach(tecla => {
+    document.querySelectorAll('.tecla').forEach(tecla => {
         tecla.disabled = false;
         tecla.classList.remove('deshabilitada');
     });
 }
 
-// Funciones para el modal
+// Modal
 function mostrarModal(titulo, mensaje) {
     tituloModalElem.textContent = titulo;
     mensajeModalElem.textContent = mensaje;
@@ -311,7 +260,7 @@ function cerrarModal() {
     modalElem.style.display = 'none';
 }
 
-// Event listeners adicionales
+// Eventos
 document.addEventListener('keydown', function (event) {
     if (juegoActivo) {
         const letra = event.key.toUpperCase();
@@ -321,14 +270,15 @@ document.addEventListener('keydown', function (event) {
     }
 });
 
-// Cerrar modal al hacer clic fuera de él
 modalElem.addEventListener('click', function (event) {
     if (event.target === modalElem) {
         cerrarModal();
     }
 });
 
-// Inicializar el juego al cargar la página
+// Sirve para al cargar la página primero carga las palabras desde DB
 document.addEventListener('DOMContentLoaded', function () {
-    reiniciarJuego();
+    cargarPalabras().then(() => {
+        reiniciarJuego();
+    });
 });

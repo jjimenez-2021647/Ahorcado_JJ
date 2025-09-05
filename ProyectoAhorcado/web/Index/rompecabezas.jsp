@@ -40,7 +40,7 @@
                                     <span>Reiniciar</span>
                                 </div>
                             </button>
-                            <button class="button" onclick="location.href = 'Controlador?menu=Principal'">
+                            <button class="button" onclick="location.href = 'Controlador?menu=MenuPrincipal'">
                                 <span class="shadow"></span>
                                 <span class="edge"></span>
                                 <div class="front">
