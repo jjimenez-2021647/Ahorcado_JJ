@@ -40,6 +40,13 @@
                             <span>Ahorcado</span>
                         </div>
                     </a>
+                    <a href="index.jsp" class="button">
+                        <span class="shadow"></span>
+                        <span class="edge"></span>
+                        <div class="front">
+                            <span>Cerrar Sesión</span>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
