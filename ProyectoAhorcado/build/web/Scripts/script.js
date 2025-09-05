@@ -22,7 +22,7 @@ let tituloModalElem = document.getElementById("tituloModal");
 let mensajeModalElem = document.getElementById("mensajeModal");
 let tecladoElem = document.getElementById("teclado");
 
-// 🔹 Cargar palabras desde la DB
+//  Cargar palabras desde la DB
 function cargarPalabras() {
     return fetch("Controlador?menu=PalabrasJuego")
         .then(response => response.json())
@@ -276,7 +276,7 @@ modalElem.addEventListener('click', function (event) {
     }
 });
 
-// Al cargar la página 🔹 primero carga palabras desde DB
+// Sirve para al cargar la página primero carga las palabras desde DB
 document.addEventListener('DOMContentLoaded', function () {
     cargarPalabras().then(() => {
         reiniciarJuego();

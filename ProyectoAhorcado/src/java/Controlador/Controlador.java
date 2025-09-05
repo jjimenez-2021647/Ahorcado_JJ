@@ -58,7 +58,7 @@ public class Controlador extends HttpServlet {
                         // Redirige al JSP principal para login
                         response.sendRedirect("index.jsp");
                     } else {
-                        request.setAttribute("errorRegistro", "Error al registrar usuario");
+                        request.setAttribute("errorRegistro", "Error al registrar usuario, verifique sus credenciales");
                         request.getRequestDispatcher("index.jsp").forward(request, response);
                     }
                 } else {
@@ -66,27 +66,7 @@ public class Controlador extends HttpServlet {
                     request.getRequestDispatcher("index.jsp").forward(request, response);
                 }
 
-            } else if ("ActualizarLogin".equals(accion)) {
-                int codigoUsuarioLogin = Integer.parseInt(request.getParameter("txtCodigoUsuario"));
-                String nombreLogin = request.getParameter("txtNombreUsuario");
-                String apellidoLogin = request.getParameter("txtApellidoUsuario");
-
-                Usuarios usuarioLogin = new Usuarios();
-                usuarioLogin.setCodigoUsuario(codigoUsuarioLogin);
-                usuarioLogin.setNombreUsuario(nombreLogin);
-                usuarioLogin.setApellidoUsuario(apellidoLogin);
-
-                int filasLogin = usuariosDao.actualizarLogin(usuarioLogin);
-                System.out.println("Filas actualizadas en login: " + filasLogin);
-
-                Usuarios usuarioActualizado = usuariosDao.buscarPorCodigo(codigoUsuarioLogin);
-                request.setAttribute("usuario", usuarioActualizado);
-                request.getRequestDispatcher("/Index/VistaUsuarioCliente.jsp").forward(request, response);
-
-            } else {
-                // Si no hay acción específica, solo muestra el index
-                response.sendRedirect("index.jsp");
-            }
+            } 
         } else if (menu.equals("MenuPrincipal")) {
             request.getRequestDispatcher("/Index/MenuPrincipal.jsp").forward(request, response);
         } else if (menu.equals("Ahorcado")) {

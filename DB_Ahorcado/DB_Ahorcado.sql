@@ -14,7 +14,7 @@ Create table Usuarios(
 	codigoUsuario int auto_increment,
 	nombreUsuario varchar(100),
 	apellidoUsuario varchar(100), 	
-    correoUsuario varchar(150) not null,
+    correoUsuario varchar(150) not null unique,
     contraseñaUsuario varchar(100) not null,
     imagenUsuario longblob,
 	primary key PK_codigoUsuario (codigoUsuario)
@@ -47,17 +47,20 @@ call sp_AgregarUsuario('Daniela', 'Mejía', 'daniela.mejia@gmail.com', 'DMejia#8
 call sp_AgregarUsuario('Mario', 'Escobar', 'mario.escobar@gmail.com', 'MEscobar!05');
 call sp_AgregarUsuario('Rebeca', 'Salazar', 'rebeca.salazar@gmail.com', 'RSalazar*44');
 call sp_AgregarUsuario('Óscar', 'Córdova', 'oscar.cordova@gmail.com', 'OCordova#12');
-call sp_AgregarUsuario('Isabel', 'Ruiz', 'isabel.ruiz@gmail.com', 'IRuiz@78');
 call sp_AgregarUsuario('Josué', 'Jiménez', 'joshua.ja2007@gmail.com', '1818');
+call sp_AgregarUsuario('Isabel', 'Ruiz', 'isabel.ruiz@gmail.com', 'IRuiz@78');
 
--- Registrar Usuario
+-- RegistrarseLogin
 Delimiter //
-	Create procedure sp_RegistrarUsuario(
+	Create procedure sp_RegistroLogin(
     in correoUsuario varchar(150), 
-    in contraseñaUsuario varchar(100))
+    in contraseñaUsuario varchar(100),
+    out filas int)
 		Begin
 			Insert into Usuarios(correoUsuario, contraseñaUsuario)
 				Values(correoUsuario, contraseñaUsuario);
+                
+			Set filas = row_count();
         End //
 Delimiter ;
 
@@ -133,6 +136,41 @@ Delimiter //
         End //
 Delimiter ;
 
+-- Sp para poder insertar imagenes
+Delimiter //
+	Create procedure sp_AgregarImagenUsuario(
+    in _codigoUsuario int,
+    in _imagenUsuario longblob)
+		Begin
+			Update Usuarios
+				Set imagenUsuario = _imagenUsuario 
+					where codigoUsuario = _codigoUsuario;
+        End //
+Delimiter ;
+call sp_AgregarImagenUsuario(6, LOAD_FILE('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/CO-K.C.jpg'));
+
+-- Buscar Usuarios
+Delimiter //
+	Create procedure sp_BuscarUsuariosImagen(
+    in _codigoUsuario int)
+		Begin
+			Select codigoUsuario, nombreUsuario, apellidoUsuario, correoUsuario, contraseñaUsuario, imagenUsuario from Usuarios
+				where codigoUsuario = _codigoUsuario;
+        End //
+Delimiter ;
+call sp_BuscarUsuariosImagen(6);
+
+-- Busqueda del Usuario por nombre y contraseña
+Delimiter //
+	Create procedure sp_BuscarUsuariosNC(
+    in _correoUsuario varchar(100),
+    in _contraseñaUsuario varchar(100))
+		Begin
+			Select codigoUsuario, nombreUsuario, apellidoUsuario, correoUsuario, contraseñaUsuario, imagenUsuario from Usuarios where correoUsuario = _correoUsuario and contraseñaUsuario = _contraseñaUsuario;
+        End //
+Delimiter ;
+call sp_BuscarUsuariosNC('joshua.ja2007@gmail.com', '1818');
+
 -- --------------------------- Entidad Palabras --------------------------- 
 -- Agregar Palabras
 Delimiter //
@@ -144,7 +182,7 @@ Delimiter //
 				Values (palabra, pista);
         End //
 Delimiter ;
-call sp_AgregarPalabras('HORMIGAS', 'Somos pequeñas pero juntas somos fuertes.');
+call sp_AgregarPalabras('PALABRA', 'Soy muy utilizada, siempre soy mencionada, sin mi no habrian oraciones.');
 call sp_AgregarPalabras('PATINETA', 'Tiene ruedas, torinillos y lija.');
 call sp_AgregarPalabras('MURCIELAGO', 'Este animal es pequeño, su nombre lleva todas las vocales.');
 call sp_AgregarPalabras('COCODRILO', 'Este animal es grande, verde, de dientes fuertes.');
@@ -199,4 +237,4 @@ Delimiter //
 					where codigoPalabra = _codigoPalabra;
         End //
 Delimiter ;
-call sp_EditarPalabras(6, 'PALABRA', 'Soy muy utilizada, siempre soy mencionada, sin mi no habrian oraciones.');
+call sp_EditarPalabras(1, 'HORMIGAS', 'Somos pequeñas pero juntas somos fuertes.');

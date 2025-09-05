@@ -28,10 +28,7 @@ public class Validar extends HttpServlet {
             Usuarios usuarios = usuariosDAO.validar(email, pass);
 
             if (usuarios != null && usuarios.getCodigoUsuario() > 0) {
-                HttpSession session = request.getSession();
-                session.setAttribute("codigoUsuario", usuarios.getCodigoUsuario());
-                session.setAttribute("nombreUsuario", usuarios.getNombreUsuario());
-
+                
                 response.sendRedirect("Controlador?menu=MenuPrincipal");
             } else {
                 request.setAttribute("error", "Correo o contraseña incorrectos");

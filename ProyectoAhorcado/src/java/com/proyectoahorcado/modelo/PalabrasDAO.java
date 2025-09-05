@@ -111,7 +111,7 @@ public class PalabrasDAO {
     
     public List<Palabras> listarParaJuego() {
     List<Palabras> lista = new ArrayList<>();
-    String sql = "call sp_ListarPalabras();"; // tu SP ya devuelve palabra y pista
+    String sql = "call sp_ListarPalabras();"; 
     try {
         con = cn.Conexion();
         ps = con.prepareStatement(sql);
