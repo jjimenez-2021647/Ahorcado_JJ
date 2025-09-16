@@ -212,12 +212,25 @@ function actualizarImagenProgreso() {
 
         // Nombre de la imagen dinámico = palabra con mayúscula inicial
         const nombreImagen = palabraSecreta.charAt(0).toUpperCase() + palabraSecreta.slice(1).toLowerCase() + ".jpg";
-        img.src = `${contextPath}/Images/${nombreImagen}`;
+        const rutaImagen = `${contextPath}/Images/${nombreImagen}`;
+        const rutaPredeterminada = `${contextPath}/Images/ImagenDefault.jpg`;
+
+        img.src = rutaImagen;
         img.alt = `Imagen de ${palabraSecreta}`;
+
+        // Si la imagen falla en cargar, usar la imagen por defecto
+        img.onerror = function() {
+            // Esto previene loop si la imagen default también falla
+            if (this.src !== rutaPredeterminada) {
+                this.src = rutaPredeterminada;
+                this.alt = "Imagen por defecto";
+            }
+        };
 
         imagenProgresoElem.appendChild(img);
     }
 }
+
 
 // Teclado
 function deshabilitarTecla(letra) {
