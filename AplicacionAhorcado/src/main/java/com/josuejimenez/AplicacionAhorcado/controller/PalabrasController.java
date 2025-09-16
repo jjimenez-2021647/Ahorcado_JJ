@@ -30,6 +30,12 @@ public class PalabrasController {
     public String createPalabras(@RequestBody Palabras palabras){
         try{
             Palabras result = palabrasService.savePalabras(palabras);
+            if ("Mensaje-Palabra".equals(result.getPalabra())) {
+                return "La palabra ya está registrada";
+            }
+            if ("Mensaje-Pista".equals(result.getPista())) {
+                return "La pista ya está registrada";
+            }
             return "Palabra agregada exitosamente";
         }catch (CorreoInvalido e){
             return e.getMessage();
@@ -40,6 +46,12 @@ public class PalabrasController {
     public String updatePalabras(@PathVariable Integer id, @RequestBody Palabras palabras){
         try{
             Palabras result = palabrasService.updatePalabras(id, palabras);
+            if ("Mensaje-Palabra".equals(result.getPalabra())) {
+                return "La palabra ya está registrada";
+            }
+            if ("Mensaje-Pista".equals(result.getPista())) {
+                return "La pista ya está registrada";
+            }
             return "Palabra actualizada correctamente";
         }catch (CorreoInvalido e){
             return e.getMessage();

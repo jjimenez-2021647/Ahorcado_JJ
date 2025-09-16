@@ -30,12 +30,41 @@ public class PalabrasServiceImplements implements PalabrasService{
 
     @Override
     public Palabras savePalabras(Palabras palabras) {
+        List<Palabras> lista = palabrasRepository.findAll();
+        for (Palabras p : lista) {
+            if (p.getPalabra().equalsIgnoreCase(palabras.getPalabra())) {
+                palabras.setPalabra("Mensaje-Palabra");
+                return palabras;
+            }
+            if (p.getPista().equalsIgnoreCase(palabras.getPista())) {
+                palabras.setPista("Mensaje-Pista");
+                return palabras;
+            }
+        }
         return palabrasRepository.save(palabras);
     }
 
     @Override
     public Palabras updatePalabras(Integer id, Palabras palabras) {
-        return palabrasRepository.save(palabras);
+        Palabras existinPalabras = palabrasRepository.findById(id).orElse(null);
+        if (existinPalabras != null) {
+            List<Palabras> lista = palabrasRepository.findAll();
+            for (Palabras p : lista) {
+                if (!p.getId().equals(id)) {
+                    if (p.getPalabra().equalsIgnoreCase(palabras.getPalabra())) {
+                        palabras.setPalabra("Mensaje-Palabra");
+                        return palabras;
+                    }
+                    if (p.getPista().equalsIgnoreCase(palabras.getPista())) {
+                        palabras.setPista("Mensaje-Pista");
+                        return palabras;
+                    }
+                }
+            }
+            existinPalabras.setPalabra(palabras.getPalabra());
+            return palabrasRepository.save(existinPalabras);
+        }
+        return null;
     }
 
     @Override
