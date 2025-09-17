@@ -30,6 +30,15 @@ public class PalabrasServiceImplements implements PalabrasService{
 
     @Override
     public Palabras savePalabras(Palabras palabras) {
+        if (palabras.getPalabra() == null || palabras.getPalabra().trim().isEmpty()){
+            palabras.setPalabra("Mensaje-PalabraVacia");
+            return palabras;
+        }
+        if (palabras.getPista() == null || palabras.getPista().trim().isEmpty()){
+            palabras.setPista("Mensaje-PistaVacia");
+            return palabras;
+        }
+
         List<Palabras> lista = palabrasRepository.findAll();
         for (Palabras p : lista) {
             if (p.getPalabra().equalsIgnoreCase(palabras.getPalabra())) {
@@ -46,6 +55,14 @@ public class PalabrasServiceImplements implements PalabrasService{
 
     @Override
     public Palabras updatePalabras(Integer id, Palabras palabras) {
+        if (palabras.getPalabra() == null || palabras.getPalabra().trim().isEmpty()){
+            palabras.setPalabra("Mensaje-PalabraVacia");
+            return palabras;
+        }
+        if (palabras.getPista() == null || palabras.getPista().trim().isEmpty()){
+            palabras.setPista("Mensaje-PistaVacia");
+            return palabras;
+        }
         Palabras existinPalabras = palabrasRepository.findById(id).orElse(null);
         if (existinPalabras != null) {
             List<Palabras> lista = palabrasRepository.findAll();

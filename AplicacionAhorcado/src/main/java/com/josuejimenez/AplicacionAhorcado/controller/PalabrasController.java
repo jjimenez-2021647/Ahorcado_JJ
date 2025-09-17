@@ -34,6 +34,12 @@ public class PalabrasController {
     public String createPalabras(@RequestBody Palabras palabras){
         try{
             Palabras result = palabrasService.savePalabras(palabras);
+            if ("Mensaje-PistaVacia".equals(result.getPista())) {
+                return "La pista no pueda estar vacia";
+            }
+            if ("Mensaje-PalabraVacia".equals(result.getPalabra())) {
+                return "La palabra no pueda estar vacia";
+            }
             if ("Mensaje-Palabra".equals(result.getPalabra())) {
                 return "La palabra ya está registrada";
             }
@@ -52,6 +58,12 @@ public class PalabrasController {
             Palabras result = palabrasService.updatePalabras(id, palabras);
             if (result == null) {
                 return "La palabra no se encontro";
+            }
+            if ("Mensaje-PistaVacia".equals(result.getPista())) {
+                return "La pista no pueda estar vacia";
+            }
+            if ("Mensaje-PalabraVacia".equals(result.getPalabra())) {
+                return "La palabra no pueda estar vacia";
             }
             if ("Mensaje-Palabra".equals(result.getPalabra())) {
                 return "La palabra ya está registrada";

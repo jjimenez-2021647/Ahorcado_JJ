@@ -16,7 +16,7 @@ public class ValidacionCorreo {
             throw new CorreoInvalido("El correo debe terminar en @gmail.com o @kinal.edu.gt");
         }
 
-        if (!correominusculas.matches("^[A-Za-z0-9+_.-]+@(gmail\\.com|kinal.edu\\.gt)$")) {
+        if (!correominusculas.matches("^[A-Za-z0-9+_.-]+@(gmail.com|kinal.edu.gt)$")) {
             throw new CorreoInvalido("El formato del correo no es valido");
         }
     }

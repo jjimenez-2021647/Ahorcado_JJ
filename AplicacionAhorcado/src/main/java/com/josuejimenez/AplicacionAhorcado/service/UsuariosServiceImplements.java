@@ -29,7 +29,13 @@ public class UsuariosServiceImplements implements UsuariosService{
 
     @Override
     public Usuarios saveUsuarios(Usuarios usuarios) {
+        //Contraseña Vacia
         ValidacionCorreo.validarCorreo(usuarios.getCorreoUsuario());
+        if (usuarios.getContraseñaUsuario() == null || usuarios.getContraseñaUsuario().trim().isEmpty()){
+            usuarios.setContraseñaUsuario("Mensaje-ContraseñaVacia");
+            return usuarios;
+        }
+
         List<Usuarios> lista = usuariosRepository.findAll();
         for (Usuarios u : lista) {
             if (u.getCorreoUsuario().equalsIgnoreCase(usuarios.getCorreoUsuario())) {
@@ -43,6 +49,10 @@ public class UsuariosServiceImplements implements UsuariosService{
     @Override
     public Usuarios updateUsuarios(Integer id, Usuarios usuarios) {
         ValidacionCorreo.validarCorreo(usuarios.getCorreoUsuario());
+        if (usuarios.getContraseñaUsuario() == null || usuarios.getContraseñaUsuario().trim().isEmpty()){
+            usuarios.setContraseñaUsuario("Mensaje-ContraseñaVacia");
+            return usuarios;
+        }
         Usuarios existinUsuario = usuariosRepository.findById(id).orElse(null);
         if (existinUsuario != null) {
             List<Usuarios> lista = usuariosRepository.findAll();

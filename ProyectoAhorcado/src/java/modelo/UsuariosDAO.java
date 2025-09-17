@@ -1,6 +1,6 @@
-package com.proyectoahorcado.modelo;
+package modelo;
 
-import com.proyectoahorcado.config.Conexion;
+import config.Conexion;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,8 +29,6 @@ public class UsuariosDAO {
             rs = ps.executeQuery();
             while (rs.next()) {
                 usuarios.setCodigoUsuario(rs.getInt("codigo_usuario"));
-                usuarios.setNombreUsuario(rs.getString("nombre_usuario"));
-                usuarios.setApellidoUsuario(rs.getString("apellido_usuario"));
                 usuarios.setCorreoUsuario(rs.getString("correo_usuario"));
                 usuarios.setContraseñaUsuario(rs.getString("contraseña_usuario"));
             }
@@ -51,10 +49,8 @@ public class UsuariosDAO {
             while (rs.next()) {
                 Usuarios us = new Usuarios();
                 us.setCodigoUsuario(rs.getInt(1));
-                us.setNombreUsuario(rs.getString(2));
-                us.setApellidoUsuario(rs.getString(3));
-                us.setCorreoUsuario(rs.getString(4));
-                us.setContraseñaUsuario(rs.getString(5));
+                us.setCorreoUsuario(rs.getString(2));
+                us.setContraseñaUsuario(rs.getString(3));
                 listaUsuarios.add(us);
             }
         } catch (Exception e) {
@@ -68,10 +64,8 @@ public class UsuariosDAO {
         try {
             con = cn.Conexion();
             ps = con.prepareStatement(sql);
-            ps.setString(1, us.getNombreUsuario());
-            ps.setString(2, us.getApellidoUsuario());
-            ps.setString(3, us.getCorreoUsuario());
-            ps.setString(4, us.getContraseñaUsuario());
+            ps.setString(1, us.getCorreoUsuario());
+            ps.setString(2, us.getContraseñaUsuario());
             ps.executeQuery();
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,28 +102,13 @@ public class UsuariosDAO {
             if (rs.next()) {
                 usuario = new Usuarios();
                 usuario.setCodigoUsuario(rs.getInt(1));
-                usuario.setNombreUsuario(rs.getString(2));
-                usuario.setApellidoUsuario(rs.getString(3));
-                usuario.setCorreoUsuario(rs.getString(4));
-                usuario.setContraseñaUsuario(rs.getString(5));
-                usuario.setImagenUsuario(rs.getBytes(6));
+                usuario.setCorreoUsuario(rs.getString(2));
+                usuario.setContraseñaUsuario(rs.getString(3));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return usuario;
-    }
-
-    public boolean actualizarImagen(int codigoUsuario, byte[] imagen) {
-        String sql = "{call sp_AgregarImagenUsuario(?, ?)}";
-        try (Connection con = cn.Conexion(); CallableStatement cs = con.prepareCall(sql)) {
-            cs.setInt(1, codigoUsuario);
-            cs.setBytes(2, imagen);
-            return cs.executeUpdate() > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 
     public Usuarios buscarPorCodigo(int codigoUsuario) {
@@ -143,12 +122,9 @@ public class UsuariosDAO {
 
             if (rs.next()) {
                 us = new Usuarios();
-                us.setCodigoUsuario(rs.getInt(1));
-                us.setNombreUsuario(rs.getString(2));
-                us.setApellidoUsuario(rs.getString(3));
-                us.setCorreoUsuario(rs.getString(4));
-                us.setContraseñaUsuario(rs.getString(5));
-                us.setImagenUsuario(rs.getBytes(6));
+                us.setCodigoUsuario(rs.getInt(1));              
+                us.setCorreoUsuario(rs.getString(2));
+                us.setContraseñaUsuario(rs.getString(3));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -163,10 +139,8 @@ public class UsuariosDAO {
             con = cn.Conexion();
             ps = con.prepareStatement(sql);
             ps.setInt(1, usuario.getCodigoUsuario());
-            ps.setString(2, usuario.getNombreUsuario());
-            ps.setString(3, usuario.getApellidoUsuario());
-            ps.setString(4, usuario.getCorreoUsuario());
-            ps.setString(5, usuario.getContraseñaUsuario());
+            ps.setString(2, usuario.getCorreoUsuario());
+            ps.setString(3, usuario.getContraseñaUsuario());
 
             resp = ps.executeUpdate();
             System.out.println("Usuario actualizado. Filas afectadas: " + resp);
@@ -199,8 +173,6 @@ public class UsuariosDAO {
         int resp = 0;
         try (Connection con = cn.Conexion(); CallableStatement cs = con.prepareCall(sql)) {
             cs.setInt(1, usuario.getCodigoUsuario());
-            cs.setString(2, usuario.getNombreUsuario());
-            cs.setString(3, usuario.getApellidoUsuario());
             resp = cs.executeUpdate();
 
             System.out.println("Usuario actualizado en login. Filas afectadas: " + resp);

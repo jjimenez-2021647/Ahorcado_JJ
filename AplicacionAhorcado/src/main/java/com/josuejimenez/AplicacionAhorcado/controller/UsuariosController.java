@@ -33,8 +33,14 @@ public class UsuariosController {
 
     @PostMapping
     public String createUsuarios(@RequestBody Usuarios usuarios){
+        if (usuarios.getId() != null) {
+            return "El id no es un campo de Post";
+        }
         try{
             Usuarios result = usuariosService.saveUsuarios(usuarios);
+            if ("Mensaje-ContraseñaVacia".equals(result.getContraseñaUsuario())) {
+                return "La contraseña no pueda estar vacia";
+            }
             if ("Mensaje-Correo".equals(result.getCorreoUsuario())) {
                 return "El correo ya está registrado";
             }
@@ -48,6 +54,9 @@ public class UsuariosController {
     public String updateUsuarios(@PathVariable Integer id, @RequestBody Usuarios usuarios){
         try{
             Usuarios result = usuariosService.updateUsuarios(id, usuarios);
+            if ("Mensaje-ContraseñaVacia".equals(result.getContraseñaUsuario())) {
+                return "La contraseña no pueda estar vacia";
+            }
             if (result == null) {
                 return "El usuario no se encontro";
             }

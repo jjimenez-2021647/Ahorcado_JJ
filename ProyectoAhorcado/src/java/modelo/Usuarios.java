@@ -1,27 +1,25 @@
-package com.josuejimenez.AplicacionAhorcado.model;
+package modelo;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name="Usuarios")
 public class Usuarios {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name="codigo_usuario")
-        private Integer id;
-
-    @Column(name="correo_usuario")
+    private int codigoUsuario;
     private String correoUsuario;
-
-    @Column(name="contraseña_usuario")
     private String contraseñaUsuario;
 
-    public Integer getId() {
-        return id;
+    public Usuarios() {
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public Usuarios(int codigoUsuario, String correoUsuario, String contraseñaUsuario) {
+        this.codigoUsuario = codigoUsuario;
+        this.correoUsuario = correoUsuario;
+        this.contraseñaUsuario = contraseñaUsuario;
+    }
+
+    public int getCodigoUsuario() {
+        return codigoUsuario;
+    }
+
+    public void setCodigoUsuario(int codigoUsuario) {
+        this.codigoUsuario = codigoUsuario;
     }
 
     public String getCorreoUsuario() {
@@ -38,5 +36,6 @@ public class Usuarios {
 
     public void setContraseñaUsuario(String contraseñaUsuario) {
         this.contraseñaUsuario = contraseñaUsuario;
-    }
+    }   
+    
 }

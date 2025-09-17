@@ -12,8 +12,6 @@ Use DB_Ahorcado;
 -- Usuarios
 Create table Usuarios(
 	codigo_usuario int auto_increment,
-	nombre_usuario varchar(100),
-	apellido_usuario varchar(100), 	
     correo_usuario varchar(150) not null unique,
     contraseña_usuario varchar(100) not null,
 	primary key PK_codigo_usuario (codigo_usuario)
@@ -27,27 +25,54 @@ Create table Palabras(
     primary key PK_codigo_palabra (codigo_palabra)
 );
 
+-- Trigger
+-- Insercion de datos en Usuarios
+Delimiter //
+	Create Trigger tr_Before_Insert_CorreoUsuarios
+	Before Insert on Usuarios
+    For each row
+		Begin
+			If (new.correo_usuario not like '%@gmail.com' and new.correo_usuario not like '%@kinal.edu.gt')  Then
+				Signal Sqlstate '45000' 
+				set Message_text = 'El correo electrónico debe tener el dominio @gmail.com o @kinal.edu.gt';
+			end if;
+        End//
+Delimiter ;
+
+Delimiter //
+	Create Trigger tr_Before_Update_CorreoUsuarios
+	Before Update on Usuarios
+    For each row
+		Begin
+			If (new.correo_usuario not like '%@gmail.com' and new.correo_usuario not like '%@kinal.edu.gt')  Then
+				Signal Sqlstate '45000' 
+				set Message_text = 'El correo electrónico debe tener el dominio @gmail.com o @kinal.edu.gt';
+			end if;
+        End//
+Delimiter ;
+
 -- Procedimeintos almacenados
 -- --------------------------- Entidad Usuarios --------------------------- 
 -- Agregar Usuario
 Delimiter //
 	Create procedure sp_AgregarUsuario(
-    in nombre_usuario varchar(100),
-    in apellido_usuario varchar(100), 
     in correo_usuario varchar(150), 
     in contraseña_usuario varchar(100))
 		Begin
-			Insert into Usuarios(nombre_usuario, apellido_usuario, correo_usuario, contraseña_usuario)
-				Values(nombre_usuario, apellido_usuario, correo_usuario, contraseña_usuario);
+			Insert into Usuarios(correo_usuario, contraseña_usuario)
+				Values(correo_usuario, contraseña_usuario);
         End //
 Delimiter ;
-call sp_AgregarUsuario('Carlos', 'Ramírez', 'carlos.ramirez@gmail.com','CRamirez#2025');
-call sp_AgregarUsuario('Daniela', 'Mejía', 'daniela.mejia@gmail.com', 'DMejia#89');
-call sp_AgregarUsuario('Mario', 'Escobar', 'mario.escobar@gmail.com', 'MEscobar!05');
-call sp_AgregarUsuario('Rebeca', 'Salazar', 'rebeca.salazar@gmail.com', 'RSalazar*44');
-call sp_AgregarUsuario('Óscar', 'Córdova', 'oscar.cordova@gmail.com', 'OCordova#12');
-call sp_AgregarUsuario('Josué', 'Jiménez', 'joshua.ja2007@gmail.com', '1818');
-call sp_AgregarUsuario('Isabel', 'Ruiz', 'isabel.ruiz@gmail.com', 'IRuiz@78');
+call sp_AgregarUsuario('carlos.ramirez@kinal.edu.gt','CRamirez#2025');
+call sp_AgregarUsuario('daniela.mejia@gmail.com', 'DMejia#89');
+call sp_AgregarUsuario('mario.escobar@gmail.com', 'MEscobar!05');
+call sp_AgregarUsuario('rebeca.salazar@gmail.com', 'RSalazar*44');
+call sp_AgregarUsuario('oscar.cordova@gmail.com', 'OCordova#12');
+call sp_AgregarUsuario('joshua.ja2007@gmail.com', '1818');
+call sp_AgregarUsuario('isabel.ruiz@gmail.com', 'IRuiz@78');
+call sp_AgregarUsuario('roberto.rodriguez@gmail.com', '12345');
+call sp_AgregarUsuario('jefry.cruz@gmail.com', '54321');
+call sp_AgregarUsuario('diego.lopez@gmail.com', '84563');
 
 -- RegistrarseLogin
 Delimiter //
@@ -67,7 +92,7 @@ Delimiter ;
 Delimiter //
 	Create procedure sp_ListarUsuarios()
 		Begin
-			Select codigo_usuario, nombre_usuario, apellido_usuario, correo_usuario, contraseña_usuario from Usuarios;
+			Select codigo_usuario, correo_usuario, contraseña_usuario from Usuarios;
         End //
 Delimiter ;
 call sp_ListarUsuarios();
@@ -92,7 +117,7 @@ Delimiter //
 	Create procedure sp_BuscarUsuarios(
     in _codigo_usuario int)
 		Begin
-			Select codigo_usuario, nombre_usuario, apellido_usuario, correo_usuario, contraseña_usuario from Usuarios
+			Select codigo_usuario, correo_usuario, contraseña_usuario from Usuarios
 				where codigo_usuario = _codigo_usuario;
         End //
 Delimiter ;
@@ -102,25 +127,22 @@ call sp_BuscarUsuarios(1);
 Delimiter //
 	Create procedure sp_EditarUsuario(
     in _codigo_usuario int,
-    in _nombre_usuario varchar(100),
-    in _apellido_usuario varchar(100), 
     in _correo_usuario varchar(150), 
     in _contraseña_usuario varchar(100)) 
 		Begin
 			Update Usuarios
-				set nombre_usuario = _nombre_usuario,
-				apellido_usuario = _apellido_usuario,
-				correo_usuario = _correo_usuario,
+				set correo_usuario = _correo_usuario,
                 contraseña_usuario = _contraseña_usuario
 					where codigo_usuario = _codigo_usuario;
         End //
 Delimiter ;
-call sp_EditarUsuario(1, 'Rebeca', 'Hernández', 'rebeca.hernandez@gmail.com', 'RHernandez@16');
-call sp_EditarUsuario(2, 'Óscar', 'Ramírez', 'oscar.ramirez@gmail.com','ORamirez#17');
-call sp_EditarUsuario(3, 'Isabel', 'López', 'isabel.lopez@gmail.com', 'ClaveSegura#2025');
-call sp_EditarUsuario(4, 'Ricardo', 'Estrada', 'ricardo.estrada@gmail.com','REstrada!19');
-call sp_EditarUsuario(5, 'Valeria', 'Guzmán', 'valeria.guzman@gmail.com', 'VGuzman@20');
+call sp_EditarUsuario(1, 'rebeca.hernandez@gmail.com', 'RHernandez@16');
+call sp_EditarUsuario(2, 'oscar.ramirez@gmail.com','ORamirez#17');
+call sp_EditarUsuario(3, 'isabel.lopez@gmail.com', 'ClaveSegura#2025');
+call sp_EditarUsuario(4, 'ricardo.estrada@gmail.com','REstrada!19');
+call sp_EditarUsuario(5, 'valeria.guzman@kinal.edu.gt', 'VGuzman@20');
 
+/*
 -- Editar Usuario Creado en el login 
 Delimiter //
 	Create procedure sp_EditarUsuarioLogin(
@@ -133,7 +155,7 @@ Delimiter //
 				apellido_usuario = _apellido_usuario
 					where codigo_usuario = _codigo_usuario;
         End //
-Delimiter ;
+Delimiter ;*/
 
 -- Busqueda del Usuario por nombre y contraseña
 Delimiter //
@@ -141,7 +163,7 @@ Delimiter //
     in _correo_usuario varchar(100),
     in _contraseña_usuario varchar(100))
 		Begin
-			Select codigo_usuario, nombre_usuario, apellido_usuario, correo_usuario, contraseña_usuario from Usuarios where correo_usuario = _correo_usuario and contraseña_usuario = _contraseña_usuario;
+			Select codigo_usuario, correo_usuario, contraseña_usuario from Usuarios where correo_usuario = _correo_usuario and contraseña_usuario = _contraseña_usuario;
         End //
 Delimiter ;
 call sp_BuscarUsuariosNC('joshua.ja2007@gmail.com', '1818');
@@ -164,6 +186,9 @@ call sp_AgregarPalabras('COCODRILO', 'Este animal es grande, verde, de dientes f
 call sp_AgregarPalabras('MICROFONO', 'Me usan cuando quieren ser escuchados.');
 call sp_AgregarPalabras('ROMPECABEZAS', 'Soy un dolor de cabeza para quienes no tienen paciencia.');
 call sp_AgregarPalabras('TELEFONO', 'Emito luz y sonido, soy muy utilizado.');
+call sp_AgregarPalabras('ZOMBI', 'Como cerebros y estoy podrido.');
+call sp_AgregarPalabras('COMPUTADORA', 'Soy algo que siempre utilizas (informaticos).');
+call sp_AgregarPalabras('ZOMPOPO', 'Soy un animal que sale en mayo.');
 
 -- Listar Palabras
 Delimiter //
