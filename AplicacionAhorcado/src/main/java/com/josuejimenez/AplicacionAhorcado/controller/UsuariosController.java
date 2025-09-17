@@ -1,5 +1,6 @@
 package com.josuejimenez.AplicacionAhorcado.controller;
 
+import com.josuejimenez.AplicacionAhorcado.model.Palabras;
 import com.josuejimenez.AplicacionAhorcado.model.Usuarios;
 import com.josuejimenez.AplicacionAhorcado.service.UsuariosService;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,12 @@ public class UsuariosController {
     }
 
     @GetMapping("/{id}")
-    public Usuarios getUsuariosById(@PathVariable Integer id){
-        return usuariosService.getUsuariosById(id);
+    public Object getUsuariosById(@PathVariable Integer id){
+        Usuarios usuarios = usuariosService.getUsuariosById(id);
+        if (usuarios == null) {
+            return "El usuario no se encontro";
+        }
+        return usuarios;
     }
 
     @PostMapping
@@ -43,6 +48,9 @@ public class UsuariosController {
     public String updateUsuarios(@PathVariable Integer id, @RequestBody Usuarios usuarios){
         try{
             Usuarios result = usuariosService.updateUsuarios(id, usuarios);
+            if (result == null) {
+                return "El usuario no se encontro";
+            }
             if ("Mensaje-Correo".equals(result.getCorreoUsuario())) {
                 return "El correo ya está registrado";
             }
