@@ -1,0 +1,15 @@
+Pre:
+pre pm.sendRequest(pm.request, function (err, res) {
+    if (err) {
+        console.log("No se pudo conectar con la API, probablemente no está levantada.");
+        throw new Error("Servidor no disponible porfacor levante el servicio: " + err.message);
+    }
+});
+
+Post:
+if (pm.response === undefined) {
+    console.log("No se pudo conectar con la API, probablemente no está levantada.");
+    pm.test("Servidor no disponible", function () {
+        pm.expect.fail("El servidor no está disponible o apagado.");
+    });
+}
