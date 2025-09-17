@@ -62,6 +62,7 @@ public class PalabrasServiceImplements implements PalabrasService{
                 }
             }
             existinPalabras.setPalabra(palabras.getPalabra());
+            existinPalabras.setPista(palabras.getPista());
             return palabrasRepository.save(existinPalabras);
         }
         return null;

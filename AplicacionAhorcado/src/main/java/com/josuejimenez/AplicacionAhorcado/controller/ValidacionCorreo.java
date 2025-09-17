@@ -2,7 +2,7 @@ package com.josuejimenez.AplicacionAhorcado.controller;
 
 public class ValidacionCorreo {
     private static  String dominioGmail = "@gmail.com";
-    private static  String dominioEdu = "@edu.gt";
+    private static  String dominioEdu = "@kinal.edu.gt";
     private static  String correominusculas;
 
     public static void validarCorreo (String correo) {
@@ -13,10 +13,10 @@ public class ValidacionCorreo {
         correominusculas = correo.toLowerCase().trim();
 
         if (!correominusculas.endsWith(dominioGmail) && !correominusculas.endsWith(dominioEdu)) {
-            throw new CorreoInvalido("El correo debe terminar en @gmail.com o @edu.gt");
+            throw new CorreoInvalido("El correo debe terminar en @gmail.com o @kinal.edu.gt");
         }
 
-        if (!correominusculas.matches("^[A-Za-z0-9+_.-]+@(gmail\\.com|edu\\.gt)$")) {
+        if (!correominusculas.matches("^[A-Za-z0-9+_.-]+@(gmail\\.com|kinal.edu\\.gt)$")) {
             throw new CorreoInvalido("El formato del correo no es valido");
         }
     }

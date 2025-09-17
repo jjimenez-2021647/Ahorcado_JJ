@@ -22,8 +22,12 @@ public class PalabrasController {
     }
 
     @GetMapping("/{id}")
-    public Palabras getPalabrasById(@PathVariable Integer id){
-        return palabrasService.getPalabrasById(id);
+    public Object getPalabrasById(@PathVariable Integer id){
+        Palabras palabras = palabrasService.getPalabrasById(id);
+        if (palabras == null) {
+            return "La palabra no se encontro";
+        }
+        return palabras;
     }
 
     @PostMapping
@@ -43,9 +47,12 @@ public class PalabrasController {
     }
 
     @PutMapping("/{id}")
-    public String updatePalabras(@PathVariable Integer id, @RequestBody Palabras palabras){
-        try{
+    public String updatePalabra(@PathVariable Integer id, @RequestBody Palabras palabras) {
+        try {
             Palabras result = palabrasService.updatePalabras(id, palabras);
+            if (result == null) {
+                return "La palabra no se encontro";
+            }
             if ("Mensaje-Palabra".equals(result.getPalabra())) {
                 return "La palabra ya está registrada";
             }
@@ -54,9 +61,8 @@ public class PalabrasController {
             }
             return "Palabra actualizada correctamente";
         }catch (CorreoInvalido e){
-            return e.getMessage();
+            return e.getMessage();}
         }
-    }
 
     @DeleteMapping("/{id}")
     public String deletePalabras(@PathVariable Integer id){
