@@ -1,7 +1,7 @@
 package Controlador;
 
-import com.proyectoahorcado.modelo.Usuarios;
-import com.proyectoahorcado.modelo.UsuariosDAO;
+import modelo.Usuarios;
+import modelo.UsuariosDAO;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

@@ -1,6 +1,6 @@
-package com.proyectoahorcado.modelo;
+package modelo;
 
-import com.proyectoahorcado.config.Conexion;
+import config.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

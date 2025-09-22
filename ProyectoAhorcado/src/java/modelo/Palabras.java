@@ -1,4 +1,4 @@
-package com.proyectoahorcado.modelo;
+package modelo;
 
 
 public class Palabras {

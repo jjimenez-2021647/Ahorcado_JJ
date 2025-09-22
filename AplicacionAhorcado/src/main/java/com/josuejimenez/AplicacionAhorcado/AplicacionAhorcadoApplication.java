@@ -34,18 +34,19 @@ public class AplicacionAhorcadoApplication implements CommandLineRunner {
             }
 
             if (puertoOcupado) { //Si el puerto esta ocupado
-                int puerto1 = leerPuertoProperties(); //Leemos el puerto que esta en el application.properties
-                int puerto2 = puerto1 + 1; //Aca declaramos una variable que corresponde al nuevo puerto para el mini-servidor
-                System.err.println("Puerto " + puerto1 + " en uso. Levantaremos un mini-servidor en el puerto " + puerto2);
+                int puerto1 = leerPuertoProperties(); //Leemos el puerto que esta en application.properties
+                int puerto2 = puerto1; //Empezamos desde el puerto1 y vamos sumando
+                boolean servidorLevantado = false;
 
-                //Intentamos levantar el mini servidor
-                try {
-                    levantarMiniServidor(puerto2, puerto1); //Ponemos el puerto nuevo y el puerto ocupado
-                } catch (IOException ioException) {
-                    ioException.printStackTrace(); //Si algo falla pues se levanta el mini servidor
+                while (!servidorLevantado) {
+                    try {
+                        puerto2++; //Probamos el siguiente puerto
+                        levantarMiniServidor(puerto2, puerto1);
+                        servidorLevantado = true; //Si no lanza excepción, ya está levantado
+                    } catch (IOException ioException) {
+                        System.err.println("Puerto " + puerto2 + " ocupado, intentando con el siguiente...");
+                    }
                 }
-            } else {
-                e.printStackTrace(); //Si el error no es el puerto entonces se muestre el verdadero error
             }
         }
     }

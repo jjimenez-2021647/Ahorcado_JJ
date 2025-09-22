@@ -1,9 +1,9 @@
 package Controlador;
 
-import com.proyectoahorcado.modelo.Palabras;
-import com.proyectoahorcado.modelo.PalabrasDAO;
-import com.proyectoahorcado.modelo.Usuarios;
-import com.proyectoahorcado.modelo.UsuariosDAO;
+import modelo.Palabras;
+import modelo.PalabrasDAO;
+import modelo.Usuarios;
+import modelo.UsuariosDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
