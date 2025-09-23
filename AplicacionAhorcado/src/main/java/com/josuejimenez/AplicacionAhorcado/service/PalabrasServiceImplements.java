@@ -89,4 +89,9 @@ public class PalabrasServiceImplements implements PalabrasService{
     public void deletePalabras(Integer id) {
         palabrasRepository.deleteById(id);
     }
+
+    @Override
+    public void deletePalabras2() {
+
+    }
 }

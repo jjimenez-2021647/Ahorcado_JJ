@@ -10,4 +10,5 @@ public interface PalabrasService {
     Palabras savePalabras(Palabras palabras);
     Palabras updatePalabras(Integer id, Palabras palabras);
     void deletePalabras(Integer id);
+    void deletePalabras2();
 }
