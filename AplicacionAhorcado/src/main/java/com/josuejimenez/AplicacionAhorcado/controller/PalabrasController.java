@@ -73,8 +73,9 @@ public class PalabrasController {
             }
             return "Palabra actualizada correctamente";
         }catch (CorreoInvalido e){
-            return e.getMessage();}
+            return e.getMessage();
         }
+    }
 
     @DeleteMapping("/{id}")
     public String deletePalabras(@PathVariable Integer id){
@@ -85,4 +86,15 @@ public class PalabrasController {
         palabrasService.deletePalabras(id);
         return "Palabra eliminada correctamente";
     }
+
+    @DeleteMapping
+    public String deletePalabras(){
+        return "Por favor, ingrese un ID";
+    }
+
+    @PutMapping()
+    public String updatePalabra() {
+        return "Por favor, ingrese un ID";
+    }
+
 }

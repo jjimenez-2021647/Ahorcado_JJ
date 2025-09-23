@@ -78,4 +78,14 @@ public class UsuariosController {
         usuariosService.deleteUsuarios(id);
         return "Usuario eliminado correctamente";
     }
+
+    @DeleteMapping
+    public String deletePalabras(){
+        return "Por favor, ingrese un ID";
+    }
+
+    @PutMapping()
+    public String updatePalabra() {
+        return "Por favor, ingrese un ID";
+    }
 }
